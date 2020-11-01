@@ -13,16 +13,3 @@ const (
 	// QuerierRoute to be used for querier msgs
 	QuerierRoute = ModuleName
 )
-
-const (
-	LogPrefix = "Log-"
-)
-		
-const (
-	PatientPrefix = "patient-"
-)
-		
-const (
-	QuarantinePrefix = "quarantine-"
-)
-		
