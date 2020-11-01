@@ -23,6 +23,7 @@ func GetTxCmd(cdc *codec.Codec) *cobra.Command {
 
 	FindingimposterTxCmd.AddCommand(flags.PostCommands(
     // this line is used by starport scaffolding
+		GetCmdCreateLog(cdc),
 	)...)
 
 	return FindingimposterTxCmd
