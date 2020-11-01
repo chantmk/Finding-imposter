@@ -22,3 +22,7 @@ const (
 	PatientPrefix = "patient-"
 )
 		
+const (
+	QuarantinePrefix = "quarantine-"
+)
+		
