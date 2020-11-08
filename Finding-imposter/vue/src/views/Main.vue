@@ -1,26 +1,45 @@
 <template>
   <div>
     <app-layout>
-      <div class="flex-app">
-      <img class="logo" src="../../assets/logo.png" />
-      <wallet />
-      <div></div>
+      <div class="nav-bar">
+        <div class="app-name">Finding Imposter</div>
+         <img class="logout" src="../../assets/logout.png" @click="logout"/>
       </div>
+      <log-list />
+      <quarantine-list />
+      <patient-list />
     </app-layout>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    logs: {
+      type: Array,
+      default: [
+          {
+            startAt: "dd",
+            endAt: "dd",
+          },
+          {
+            startAt: "dd",
+            endAt: "dd",
+          },
+        ]
+    //   required: true
+    }
+  },
   data: () => {
     return {
-        placeId: null,
     };
   },
   created() {
     // (this.value.fields || []).forEach((field) => {
     //   this.$set(this.fields, field, "");
     // });
+  },
+  mounted() {
   },
   computed: {
     // hasAddress() {
@@ -38,6 +57,7 @@ export default {
   methods: {
     logout() {
       console.log('hi')
+      this.$router.push('/');
     }
   },
 };
@@ -45,15 +65,15 @@ export default {
 
 
 <style>
-.flex-app {
-  height: calc(100vh - 64px);
+.nav-bar {
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 32px;
 }
-.logo {
-  text-align: center;
+.app-name {
+  font-size: 30px;
+  font-weight: bold;
 }
 .logout {
   cursor: pointer;
