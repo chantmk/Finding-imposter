@@ -2,7 +2,7 @@
   <div>
     <app-layout>
       <div class="flex-app">
-      <img class="logo" src="../../assets/logo.png" />
+      <img class="logo" src="../../assets/logo2.svg" />
       <wallet />
       <div></div>
       </div>
@@ -54,6 +54,7 @@ export default {
 }
 .logo {
   text-align: center;
+  width: 80%;
 }
 .logout {
   cursor: pointer;

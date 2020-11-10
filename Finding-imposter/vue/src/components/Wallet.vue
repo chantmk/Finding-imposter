@@ -4,7 +4,7 @@
       type="text"
       v-model="password"
       class="password__input"
-      placeholder="Password (mnemonic)"
+      placeholder="Password"
     />
     <div class="button" @click="login">
       LOG IN

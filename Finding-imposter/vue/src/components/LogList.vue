@@ -24,12 +24,11 @@
     <div class="check-in">
         <input
             type="text"
-            placeholder="Place id"
             :value="placeId"
             @input="input"
-            :disabled="disabled"
+            disabled
         />
-        <button class="check-in-button" @click="checkin">
+        <button class="check-in-button" @click="checkin" :disabled="disabled">
           CHECK IN
         </button>
     </div>
@@ -66,6 +65,7 @@
 .flex-center {
     display: flex;
     justify-content: center;
+    text-align: center;
 }
 .divider {
     height: 1px;
@@ -76,7 +76,7 @@
     width: 24px;
     height: 24px;
     border-radius: 100%;
-    background-color: #CCEA77;
+    background-color: #7EC03B;
     color: #FFFFFF;
     text-align: center;
     font-size: 20px;
@@ -91,7 +91,7 @@ input {
     font-size: inherit;
     padding: 4px 8px;
     margin-right: 8px;
-    width: 120px;
+    width: 150px;
     border-radius: 5px;
     box-sizing: border-box;
     background: rgba(0, 0, 0, 0);
@@ -99,15 +99,18 @@ input {
     outline: none;
 }
 input:disabled {
-    background: #EFEFEF;
+  background: #EFEFEF;
 }
 .check-in-button {
-  background-color: #CCEA77;
+  background-color: #7EC03B;
   color: #FFFFFF;
   padding: 2px 8px;
   border-radius: 5px;
   cursor: pointer;
   border: none;
+}
+.check-in-button:disabled {
+  background-color: #E7E7E7;
 }
 </style>
 
@@ -116,25 +119,13 @@ export default {
   props: {
     logs: {
       type: Array,
-      default: [
-          {
-            name: "palce",
-            checkInAt: "dd",
-            checkOutAt: "dd",
-          },
-          {
-            name: "palce",
-            checkInAt: "dd",
-            checkOutAt: null,
-          },
-        ]
-    //   required: true
+      required: true
     }
   },
   data: () => {
     return {
         placeId: null,
-        disabled: false,
+        disabled: true,
     };
   },
   created() {
@@ -146,8 +137,8 @@ export default {
     const { id } = this.$route.query
     console.log(id)
     if(id) {
-        this.placeId = id
-        this.disabled = true
+        this.placeId = "Engineering library, Chulalongkorn University"
+        this.disabled = false
     }
   },
   computed: {

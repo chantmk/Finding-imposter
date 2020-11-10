@@ -1,6 +1,6 @@
 <template>
   <div class="log-list">
-    <div class="header">Patient</div>
+    <div class="header">Covid</div>
     <div class="table">
       <div class="table-header row">
         <div style="flex:1" class="flex-center">Status</div>
@@ -15,12 +15,6 @@
     </div>
     <div class="divider"></div>
     <div class="check-in">
-        <input
-            type="text"
-            placeholder="Place id"
-            :value="placeId"
-            @input="input"
-        />
         <button class="report-button" @click="report">
           REPORT
         </button>
@@ -81,9 +75,9 @@ input {
     font-family: inherit;
 }
 .report-button {
-  background-color: #EA8C77;
+  background-color: #FF5100;
   color: #FFFFFF;
-  padding: 2px 8px;
+  padding: 8px;
   border-radius: 5px;
   cursor: pointer;
   border: none;
@@ -95,17 +89,7 @@ export default {
   props: {
     logs: {
       type: Array,
-      default: [
-          {
-            status: "palce",
-            reportAt: "dd",
-          },
-          {
-            status: "palce",
-            reportAt: "dd",
-          },
-        ]
-    //   required: true
+      required: true
     }
   },
   data: () => {

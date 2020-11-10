@@ -1,13 +1,12 @@
 <template>
   <div>
     <app-layout>
-      <div class="nav-bar">
-        <div class="app-name">Finding Imposter</div>
-         <!-- <img class="logout" src="../../assets/logout.png" @click="logout"/> -->
-      </div>
-      <log-list :logs="logs"/>
-      <quarantine-list :logs="quarantines"/>
-      <covid-list :logs="covids"/>
+        <div class="doctor-nav-bar">
+            <div class="app-name">Finding Imposter</div>
+            <img class="logout" src="../../assets/logout.png" @click="logout"/>
+         </div>
+        <div class="app-sub-name">- DOCTOR -</div>
+      <doctor-list :logs="logs"/>
     </app-layout>
   </div>
 </template>
@@ -29,31 +28,13 @@ export default {
   mounted() {
     this.logs = [
       {
-        name: "Engineering library",
-        checkInAt: "13/6/2020 18:30",
-        checkOutAt: "13/6/2020 18:30",
+        id: "t17ExvqLpLLzgSoM",
+        createdAt: "13/6/2020 18:30",
       },
       {
-        name: "Engineering library",
-        checkInAt: "13/6/2020 18:30",
-        checkOutAt: null,
+        id: "t17ExvqLpLLzgSoM",
+        createdAt: "13/6/2020 18:30",
       }
-    ]
-    this.quarantines = [
-      {
-        startAt: "13/6/2020 18:30",
-        endAt: "13/6/2020 18:30",
-      },
-    ]
-    this.covids = [
-      {
-        status: "REJECTED",
-        reportAt: "13/6/2020 18:30",
-      },
-      {
-        status: "PENDING",
-        reportAt: "13/6/2020 18:30",
-      },
     ]
   },
   computed: {
@@ -80,15 +61,19 @@ export default {
 
 
 <style>
-.nav-bar {
+.doctor-nav-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
 }
 .app-name {
   font-size: 30px;
   font-weight: bold;
+}
+.app-sub-name {
+  margin-bottom: 32px;
+  color: #898989;
+
 }
 .logout {
   cursor: pointer;
