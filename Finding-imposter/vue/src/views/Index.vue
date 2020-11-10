@@ -12,28 +12,9 @@
 
 <script>
 export default {
-  data: () => {
-    return {
-        placeId: null,
-    };
-  },
-  created() {
-    // (this.value.fields || []).forEach((field) => {
-    //   this.$set(this.fields, field, "");
-    // });
-  },
-  computed: {
-    // hasAddress() {
-    //   return !!this.$store.state.account.address;
-    // },
-    // instanceList() {
-    //   return this.$store.state.data[this.value.type] || [];
-    // },
-    // valid() {
-    //   return Object.values(this.fields).every((el) => {
-    //     return el.trim().length > 0;
-    //   });
-    // },
+  mounted() {
+    if(this.$store.state.account && this.$store.state.account.id)
+      this.$router.push('/doctor'); 
   },
   methods: {
     logout() {
@@ -42,7 +23,6 @@ export default {
   },
 };
 </script>
-
 
 <style>
 .flex-app {
@@ -55,6 +35,7 @@ export default {
 .logo {
   text-align: center;
   width: 80%;
+  max-width: 300px;
 }
 .logout {
   cursor: pointer;

@@ -12,6 +12,49 @@
   </div>
 </template>
 
+<script>
+import * as bip39 from "bip39";
+
+export default {
+  data() {
+    return {
+      password: "",
+      error: false
+    };
+  },
+  computed: {
+    account() {
+      return this.$store.state.account;
+    },
+    address() {
+      const { client } = this.$store.state;
+      const address = client && client.senderAddress;
+      return address;
+    },
+    mnemonicValid() {
+      return bip39.validateMnemonic(this.passwordClean);
+    },
+    passwordClean() {
+      return this.password.trim();
+    }
+  },
+  methods: {
+    async login() {
+      const mnemonic = this.password.trim();
+      if (bip39.validateMnemonic(mnemonic) && !this.error) {
+        this.$store.store.dispatch("accountSignIn", { mnemonic }).catch(() => {
+          this.error = true;
+          setTimeout(() => {
+            this.error = false;
+          }, 1000);
+        });
+        this.$router.push('/doctor'); 
+      }
+    }
+  }
+};
+</script>
+
 <style scoped>
 .container {
   margin-bottom: 1.5rem;
@@ -57,50 +100,3 @@
 }
 </style>
 
-<script>
-import IconUser from "@/components/IconUser.vue";
-import * as bip39 from "bip39";
-
-export default {
-  components: {
-    IconUser
-  },
-  data() {
-    return {
-      password: "",
-      error: false
-    };
-  },
-  computed: {
-    account() {
-      return this.$store.state.account;
-    },
-    address() {
-      const { client } = this.$store.state;
-      const address = client && client.senderAddress;
-      return address;
-    },
-    mnemonicValid() {
-      return bip39.validateMnemonic(this.passwordClean);
-    },
-    passwordClean() {
-      return this.password.trim();
-    }
-  },
-  methods: {
-    async login() {
-      console.log('hii')
-      this.$router.push('/main');
-      if (this.mnemonicValid && !this.error) {
-        const mnemonic = this.passwordClean;
-        this.$store.dispatch("accountSignIn", { mnemonic }).catch(() => {
-          this.error = true;
-          setTimeout(() => {
-            this.error = false;
-          }, 1000);
-        });
-      }
-    }
-  }
-};
-</script>

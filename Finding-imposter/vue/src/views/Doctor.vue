@@ -6,49 +6,16 @@
             <img class="logout" src="../../assets/logout.png" @click="logout"/>
          </div>
         <div class="app-sub-name">- DOCTOR -</div>
-      <doctor-list :logs="logs"/>
+      <doctor-list />
     </app-layout>
   </div>
 </template>
 
 <script>
 export default {
-  data: () => {
-    return {
-      logs: [],
-      quarantines: [],
-      covids: [],
-    };
-  },
-  created() {
-    // (this.value.fields || []).forEach((fi eld) => {
-    //   this.$set(this.fields, field, "");
-    // });
-  },
   mounted() {
-    this.logs = [
-      {
-        id: "t17ExvqLpLLzgSoM",
-        createdAt: "13/6/2020 18:30",
-      },
-      {
-        id: "t17ExvqLpLLzgSoM",
-        createdAt: "13/6/2020 18:30",
-      }
-    ]
-  },
-  computed: {
-    // hasAddress() {
-    //   return !!this.$store.state.account.address;
-    // },
-    // instanceList() {
-    //   return this.$store.state.data[this.value.type] || [];
-    // },
-    // valid() {
-    //   return Object.values(this.fields).every((el) => {
-    //     return el.trim().length > 0;
-    //   });
-    // },
+    if(!this.$store.store.state.account || !!this.$store.store.state.account.id)
+      this.$router.push('/'); 
   },
   methods: {
     logout() {

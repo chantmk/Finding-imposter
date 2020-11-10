@@ -86,21 +86,14 @@ input {
 
 <script>
 export default {
-  props: {
-    logs: {
-      type: Array,
-      required: true
-    }
-  },
-  data: () => {
-    return {
-    };
-  },
   computed: {
+    logs() {
+      return this.$store.log.state.data.covid
+    },
   },
   methods: {
     report() {
-        console.log('hi')
+      this.$store.log.dispatch("report")
     }
   },
 };

@@ -25,6 +25,28 @@
   </div>
 </template>
 
+<script>
+export default {
+  mounted() {
+    this.$store.store.dispatch("getData")
+  },
+  computed: {
+    logs() {
+      return this.$store.store.state.data
+    },
+  },
+  methods: {
+    approve(id) {
+      this.$store.store.dispatch("action", { status: "APPROVED", id })
+    },
+    reject(id) {
+      this.$store.store.dispatch("action", { status: "REJECTED", id })
+    }
+  },
+};
+</script>
+
+
 <style scoped>
 .log-list {
 
@@ -83,45 +105,3 @@
 }
 
 </style>
-
-<script>
-export default {
-  props: {
-    logs: {
-      type: Array,
-      required: true
-    }
-  },
-  data: () => {
-    return {};
-  },
-  created() {
-    // (this.value.fields || []).forEach((field) => {
-    //   this.$set(this.fields, field, "");
-    // });
-  },
-  mounted() {
-  },
-  computed: {
-    // hasAddress() {
-    //   return !!this.$store.state.account.address;
-    // },
-    // instanceList() {
-    //   return this.$store.state.data[this.value.type] || [];
-    // },
-    // valid() {
-    //   return Object.values(this.fields).every((el) => {
-    //     return el.trim().length > 0;
-    //   });
-    // },
-  },
-  methods: {
-    approve() {
-        console.log('approve')
-    },
-    reject() {
-        console.log('reject')
-    }
-  },
-};
-</script>

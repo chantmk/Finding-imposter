@@ -17,6 +17,16 @@
   </div>
 </template>
 
+<script>
+export default {
+  computed: {
+    logs() {
+      return this.$store.log.state.data.quarantine
+    },
+  },
+};
+</script>
+
 <style scoped>
 .header {
     font-size: 24px;
@@ -45,39 +55,3 @@
     margin-bottom: 8px;
 }
 </style>
-
-<script>
-export default {
-  props: {
-    logs: {
-      type: Array,
-      required: true
-    }
-  },
-  data: () => {
-    return {
-        placeId: null,
-    };
-  },
-  created() {
-    // (this.value.fields || []).forEach((field) => {
-    //   this.$set(this.fields, field, "");
-    // });
-  },
-  computed: {
-    // hasAddress() {
-    //   return !!this.$store.state.account.address;
-    // },
-    // instanceList() {
-    //   return this.$store.state.data[this.value.type] || [];
-    // },
-    // valid() {
-    //   return Object.values(this.fields).every((el) => {
-    //     return el.trim().length > 0;
-    //   });
-    // },
-  },
-  methods: {
-  },
-};
-</script>

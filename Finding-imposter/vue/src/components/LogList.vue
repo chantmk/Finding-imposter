@@ -13,7 +13,7 @@
             <div style="flex:1" class="flex-center">{{ log.checkInAt }}</div>
             <div style="flex:1" class="flex-center" v-if="!!log.checkOutAt">{{ log.checkOutAt }}</div>
             <div class="flex-center" style="flex:1;:center" v-else>
-                <div class="check-out-button" @click="checkout">
+                <div class="check-out-button" @click="() => checkout(log.id)">
                     +
                 </div>
             </div>
@@ -25,7 +25,6 @@
         <input
             type="text"
             :value="placeId"
-            @input="input"
             disabled
         />
         <button class="check-in-button" @click="checkin" :disabled="disabled">
@@ -34,6 +33,41 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data: () => {
+    return {
+        placeId: null,
+        disabled: true,
+    };
+  },
+  mounted() {
+    const { id } = this.$route.query
+    if(id) {
+        this.placeId = "123"
+        this.disabled = false
+    }
+  },
+  computed: {
+    logs() {
+      return this.$store.log.state.data.log
+    },
+  },
+  methods: {
+    checkout(logId) {
+      this.$store.log.dispatch("checkout", { logId })
+    },
+    async checkin() {
+        await this.$store.log.dispatch("checkin", { placeId: this.placeId })
+        this.placeId = null
+        this.disabled = true
+        this.$router.push('/main'); 
+    }
+  },
+};
+</script>
+
 
 <style scoped>
 .log-list {
@@ -114,59 +148,3 @@ input:disabled {
 }
 </style>
 
-<script>
-export default {
-  props: {
-    logs: {
-      type: Array,
-      required: true
-    }
-  },
-  data: () => {
-    return {
-        placeId: null,
-        disabled: true,
-    };
-  },
-  created() {
-    // (this.value.fields || []).forEach((field) => {
-    //   this.$set(this.fields, field, "");
-    // });
-  },
-  mounted() {
-    const { id } = this.$route.query
-    console.log(id)
-    if(id) {
-        this.placeId = "Engineering library, Chulalongkorn University"
-        this.disabled = false
-    }
-  },
-  computed: {
-    // hasAddress() {
-    //   return !!this.$store.state.account.address;
-    // },
-    // instanceList() {
-    //   return this.$store.state.data[this.value.type] || [];
-    // },
-    // valid() {
-    //   return Object.values(this.fields).every((el) => {
-    //     return el.trim().length > 0;
-    //   });
-    // },
-  },
-  methods: {
-    title(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    },
-    input(event) {
-        this.placeId = event.target.value;
-    },
-    checkout() {
-        console.log('hi', this.placeId)
-    },
-    checkin() {
-        console.log('hi')
-    }
-  },
-};
-</script>

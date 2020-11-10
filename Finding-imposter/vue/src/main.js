@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import log from "./store/log";
 import _ from "lodash";
 
 Vue.config.productionTip = false;
@@ -16,6 +17,9 @@ ComponentContext.keys().forEach((componentFilePath) => {
 
 new Vue({
   router,
-  store,
+  store: {
+    store,
+    log
+  },
   render: (h) => h(App),
 }).$mount("#app");

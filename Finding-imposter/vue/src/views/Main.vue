@@ -3,81 +3,21 @@
     <app-layout>
       <div class="nav-bar">
         <div class="app-name">Finding Imposter</div>
-         <!-- <img class="logout" src="../../assets/logout.png" @click="logout"/> -->
       </div>
-      <log-list :logs="logs"/>
-      <quarantine-list :logs="quarantines"/>
-      <covid-list :logs="covids"/>
+      <log-list />
+      <quarantine-list />
+      <covid-list />
     </app-layout>
   </div>
 </template>
 
 <script>
 export default {
-  data: () => {
-    return {
-      logs: [],
-      quarantines: [],
-      covids: [],
-    };
-  },
-  created() {
-    // (this.value.fields || []).forEach((fi eld) => {
-    //   this.$set(this.fields, field, "");
-    // });
-  },
   mounted() {
-    this.logs = [
-      {
-        name: "Engineering library",
-        checkInAt: "13/6/2020 18:30",
-        checkOutAt: "13/6/2020 18:30",
-      },
-      {
-        name: "Engineering library",
-        checkInAt: "13/6/2020 18:30",
-        checkOutAt: null,
-      }
-    ]
-    this.quarantines = [
-      {
-        startAt: "13/6/2020 18:30",
-        endAt: "13/6/2020 18:30",
-      },
-    ]
-    this.covids = [
-      {
-        status: "REJECTED",
-        reportAt: "13/6/2020 18:30",
-      },
-      {
-        status: "PENDING",
-        reportAt: "13/6/2020 18:30",
-      },
-    ]
-  },
-  computed: {
-    // hasAddress() {
-    //   return !!this.$store.state.account.address;
-    // },
-    // instanceList() {
-    //   return this.$store.state.data[this.value.type] || [];
-    // },
-    // valid() {
-    //   return Object.values(this.fields).every((el) => {
-    //     return el.trim().length > 0;
-    //   });
-    // },
-  },
-  methods: {
-    logout() {
-      console.log('hi')
-      this.$router.push('/');
-    }
+    this.$store.log.dispatch("init")
   },
 };
 </script>
-
 
 <style>
 .nav-bar {
