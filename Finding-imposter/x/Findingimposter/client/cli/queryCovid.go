@@ -9,18 +9,18 @@ import (
   "github.com/chantmk/Finding-imposter/x/Findingimposter/types"
 )
 
-func GetCmdListPatient(queryRoute string, cdc *codec.Codec) *cobra.Command {
+func GetCmdListCovid(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "list-patient",
-		Short: "list all patient",
+		Use:   "list-covid",
+		Short: "list all covid",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
-			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/"+types.QueryListPatient, queryRoute), nil)
+			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/"+types.QueryListCovid, queryRoute), nil)
 			if err != nil {
-				fmt.Printf("could not list Patient\n%s\n", err.Error())
+				fmt.Printf("could not list Covid\n%s\n", err.Error())
 				return nil
 			}
-			var out []types.Patient
+			var out []types.Covid
 			cdc.MustUnmarshalJSON(res, &out)
 			return cliCtx.PrintOutput(out)
 		},

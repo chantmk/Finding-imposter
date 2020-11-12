@@ -21,8 +21,8 @@ func NewQuerier(k Keeper) sdk.Querier {
     // this line is used by starport scaffolding # 2
 		case types.QueryListQuarantine:
 			return listQuarantine(ctx, k)
-		case types.QueryListPatient:
-			return listPatient(ctx, k)
+		case types.QueryListCovid:
+			return listCovid(ctx, k)
 		case types.QueryListLog:
 			return listLog(ctx, k)
 		default:

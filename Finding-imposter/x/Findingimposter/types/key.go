@@ -19,7 +19,7 @@ const (
 )
 		
 const (
-	PatientPrefix = "patient-"
+	CovidPrefix = "covid-"
 )
 		
 const (

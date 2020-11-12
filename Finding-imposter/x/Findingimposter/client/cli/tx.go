@@ -24,7 +24,7 @@ func GetTxCmd(cdc *codec.Codec) *cobra.Command {
 	FindingimposterTxCmd.AddCommand(flags.PostCommands(
     // this line is used by starport scaffolding
 		GetCmdCreateQuarantine(cdc),
-		GetCmdCreatePatient(cdc),
+		GetCmdCreateCovid(cdc),
 		GetCmdCreateLog(cdc),
 	)...)
 

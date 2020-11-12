@@ -17,8 +17,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
     // this line is used by starport scaffolding
 		case types.MsgCreateQuarantine:
 			return handleMsgCreateQuarantine(ctx, k, msg)
-		case types.MsgCreatePatient:
-			return handleMsgCreatePatient(ctx, k, msg)
+		case types.MsgCreateCovid:
+			return handleMsgCreateCovid(ctx, k, msg)
 		case types.MsgCreateLog:
 			return handleMsgCreateLog(ctx, k, msg)
 		default:

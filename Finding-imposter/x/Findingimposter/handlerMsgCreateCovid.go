@@ -6,14 +6,15 @@ import (
 	"github.com/chantmk/Finding-imposter/x/Findingimposter/keeper"
 )
 
-func handleMsgCreatePatient(ctx sdk.Context, k keeper.Keeper, msg types.MsgCreatePatient) (*sdk.Result, error) {
-	var patient = types.Patient{
+func handleMsgCreateCovid(ctx sdk.Context, k keeper.Keeper, msg types.MsgCreateCovid) (*sdk.Result, error) {
+	var covid = types.Covid{
 		Creator: msg.Creator,
 		ID:      msg.ID,
-    Status: msg.Status,
-    User_id: msg.User_id,
+		Status: msg.Status,
+		Created_at: msg.Created_at,
+		Pub_key: msg.Pub_key,
 	}
-	k.CreatePatient(ctx, patient)
+	k.CreateCovid(ctx, covid)
 
 	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
 }

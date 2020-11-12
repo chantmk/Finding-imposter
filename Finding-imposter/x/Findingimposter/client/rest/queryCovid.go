@@ -8,9 +8,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/rest"
 )
 
-func listPatientHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
+func listCovidHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/list-patient", storeName), nil)
+		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/list-covid", storeName), nil)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusNotFound, err.Error())
 			return

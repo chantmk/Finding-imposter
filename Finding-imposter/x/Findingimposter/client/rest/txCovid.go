@@ -10,17 +10,18 @@ import (
 	"github.com/chantmk/Finding-imposter/x/Findingimposter/types"
 )
 
-type createPatientRequest struct {
-	BaseReq rest.BaseReq `json:"base_req"`
-	Creator string `json:"creator"`
-	Status string `json:"status"`
-	User_id string `json:"user_id"`
-	
+
+type createCovidRequest struct {
+	BaseReq rest.BaseReq 	`json:"base_req"`
+	Creator string 			`json:"creator"`
+	Status 	string			`json:"status"`
+  	Created_at	string   	`json:"created_at"`
+  	Pub_key []string 		`json:"pub_key"`	
 }
 
-func createPatientHandler(cliCtx context.CLIContext) http.HandlerFunc {
+func createCovidHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req createPatientRequest
+		var req createCovidRequest
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
 			return
@@ -34,7 +35,7 @@ func createPatientHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
-		msg := types.NewMsgCreatePatient(creator,  req.Status,  req.User_id, )
+		msg := types.NewMsgCreateCovid(creator,  req.Status,  req.Created_at, req.Pub_key, )
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
 }

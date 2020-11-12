@@ -31,7 +31,7 @@ func GetQueryCmd(queryRoute string, cdc *codec.Codec) *cobra.Command {
 		flags.GetCommands(
       // this line is used by starport scaffolding
 			GetCmdListQuarantine(queryRoute, cdc),
-			GetCmdListPatient(queryRoute, cdc),
+			GetCmdListCovid(queryRoute, cdc),
 			GetCmdListLog(queryRoute, cdc),
 		)...,
 	)

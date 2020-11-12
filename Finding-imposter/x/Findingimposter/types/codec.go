@@ -8,7 +8,7 @@ import (
 func RegisterCodec(cdc *codec.Codec) {
   // this line is used by starport scaffolding
 		cdc.RegisterConcrete(MsgCreateQuarantine{}, "Findingimposter/CreateQuarantine", nil)
-		cdc.RegisterConcrete(MsgCreatePatient{}, "Findingimposter/CreatePatient", nil)
+		cdc.RegisterConcrete(MsgCreateCovid{}, "Findingimposter/CreateCovid", nil)
 		cdc.RegisterConcrete(MsgCreateLog{}, "Findingimposter/CreateLog", nil)
 }
 

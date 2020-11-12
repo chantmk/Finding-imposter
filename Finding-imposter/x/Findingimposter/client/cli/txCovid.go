@@ -13,19 +13,20 @@ import (
 	"github.com/chantmk/Finding-imposter/x/Findingimposter/types"
 )
 
-func GetCmdCreatePatient(cdc *codec.Codec) *cobra.Command {
+func GetCmdCreateCovid(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "create-patient [status] [user_id]",
-		Short: "Creates a new patient",
+		Use:   "create-covid [status] [created_at] [pub_key]",
+		Short: "Creates a new covid",
 		Args:  cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
       argsStatus := string(args[0])
-      argsUser_id := string(args[1])
+	  argsCreated_at := string(args[1])
+	  argsPub_key := []string(args[2:])
       
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
-			msg := types.NewMsgCreatePatient(cliCtx.GetFromAddress(), argsStatus, argsUser_id)
+			msg := types.NewMsgCreateCovid(cliCtx.GetFromAddress(), argsStatus, argsCreated_at, argsPub_key)
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err
