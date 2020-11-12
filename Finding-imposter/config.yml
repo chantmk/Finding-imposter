@@ -4,6 +4,8 @@ accounts:
     coins: ["1000token", "100000000stake"]
   - name: user2
     coins: ["500token"]
+  - name: doctor
+    coins: ["1000token"]
 validator:
   name: user1
   staked: "100000000stake"
