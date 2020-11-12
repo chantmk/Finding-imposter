@@ -15,7 +15,7 @@ import (
 type Covid struct {
 	Creator sdk.AccAddress 	`json:"creator" yaml:"creator"`
 	ID      	string      `json:"id" yaml:"id"`
-	Status 		string	`json:"status" yaml:"status"`
+	Status 		string		`json:"status" yaml:"status"`
 	Created_at	string   	`json:"created_at" yaml:"created_at"`
   	Pub_key 	[]string 	`json:"user_id" yaml:"user_id"`
 }

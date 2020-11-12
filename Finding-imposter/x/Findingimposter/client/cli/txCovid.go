@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bufio"
+	"time"
   
 	"github.com/spf13/cobra"
 
@@ -15,13 +16,13 @@ import (
 
 func GetCmdCreateCovid(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "create-covid [status] [created_at] [pub_key]",
+		Use:   "create-covid [status] [pub_key]",
 		Short: "Creates a new covid",
 		Args:  cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
       argsStatus := string(args[0])
-	  argsCreated_at := string(args[1])
-	  argsPub_key := []string(args[2:])
+	  argsCreated_at := time.Now().Format("02/01/2006 15:04")
+	  argsPub_key := []string(args[1:])
       
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())

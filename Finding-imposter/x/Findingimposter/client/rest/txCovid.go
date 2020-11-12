@@ -2,6 +2,7 @@ package rest
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/types/rest"
@@ -15,7 +16,6 @@ type createCovidRequest struct {
 	BaseReq rest.BaseReq 	`json:"base_req"`
 	Creator string 			`json:"creator"`
 	Status 	string			`json:"status"`
-  	Created_at	string   	`json:"created_at"`
   	Pub_key []string 		`json:"pub_key"`	
 }
 
@@ -35,7 +35,8 @@ func createCovidHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
-		msg := types.NewMsgCreateCovid(creator,  req.Status,  req.Created_at, req.Pub_key, )
+		createdAt := time.Now().Format("02/01/2006 15:04")
+		msg := types.NewMsgCreateCovid(creator,  req.Status,  createdAt, req.Pub_key, )
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
 }
