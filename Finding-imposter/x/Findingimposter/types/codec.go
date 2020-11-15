@@ -7,6 +7,7 @@ import (
 // RegisterCodec registers concrete types on codec
 func RegisterCodec(cdc *codec.Codec) {
   // this line is used by starport scaffolding
+		cdc.RegisterConcrete(MsgCreateCovid{}, "Findingimposter/CreateCovid", nil)
 		cdc.RegisterConcrete(MsgCreateLog{}, "Findingimposter/CreateLog", nil)
 		cdc.RegisterConcrete(MsgCreateDoctor{}, "Findingimposter/CreateDoctor", nil)
 }

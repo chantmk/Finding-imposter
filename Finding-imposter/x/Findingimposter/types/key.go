@@ -22,3 +22,7 @@ const (
 	LogPrefix = "log-"
 )
 		
+const (
+	CovidPrefix = "covid-"
+)
+		
