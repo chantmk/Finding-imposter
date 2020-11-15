@@ -18,3 +18,7 @@ const (
 	DoctorPrefix = "doctor-"
 )
 		
+const (
+	LogPrefix = "log-"
+)
+		

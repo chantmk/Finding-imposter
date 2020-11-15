@@ -9,6 +9,8 @@ import (
 // RegisterRoutes registers Findingimposter-related REST handlers to a router
 func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
   // this line is used by starport scaffolding
+	r.HandleFunc("/Findingimposter/log", listLogHandler(cliCtx, "Findingimposter")).Methods("GET")
+	r.HandleFunc("/Findingimposter/log", createLogHandler(cliCtx)).Methods("POST")
 	r.HandleFunc("/Findingimposter/doctor", listDoctorHandler(cliCtx, "Findingimposter")).Methods("GET")
 	r.HandleFunc("/Findingimposter/doctor", createDoctorHandler(cliCtx)).Methods("POST")
 }
