@@ -26,3 +26,7 @@ const (
 	CovidPrefix = "covid-"
 )
 		
+const (
+	QuarantinePrefix = "quarantine-"
+)
+		
