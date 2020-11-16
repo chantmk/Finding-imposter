@@ -10,4 +10,5 @@ type Covid struct {
   CovidID string `json:"covidID" yaml:"covidID"`
   CreatedAt string `json:"createdAt" yaml:"createdAt"`
   Status string `json:"status" yaml:"status"`
+  PubKey []string `json:"pubKey" yaml:"pubKey"`
 }

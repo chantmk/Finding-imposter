@@ -12,7 +12,8 @@ func handleMsgCreateCovid(ctx sdk.Context, k keeper.Keeper, msg types.MsgCreateC
 		ID:      msg.ID,
     CovidID: msg.CovidID,
     CreatedAt: msg.CreatedAt,
-    Status: msg.Status,
+	Status: msg.Status,
+	PubKey: msg.PubKey,
 	}
 	k.CreateCovid(ctx, covid)
 

@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bufio"
+	"time"
   
 	"github.com/spf13/cobra"
 
@@ -15,18 +16,19 @@ import (
 
 func GetCmdCreateCovid(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "create-covid [covidID] [createdAt] [status]",
+		Use:   "create-covid [covidID] [status] [pubKey]",
 		Short: "Creates a new covid",
 		Args:  cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
       argsCovidID := string(args[0])
-      argsCreatedAt := string(args[1])
-      argsStatus := string(args[2])
+      argsCreatedAt := time.Now().Format("02/01/2006 15:04")
+	  argsStatus := string(args[1])
+	  argsPubKey := []string(args[2:])
       
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
-			msg := types.NewMsgCreateCovid(cliCtx.GetFromAddress(), argsCovidID, argsCreatedAt, argsStatus)
+			msg := types.NewMsgCreateCovid(cliCtx.GetFromAddress(), argsCovidID, argsCreatedAt, argsStatus, argsPubKey)
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err
