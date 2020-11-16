@@ -13,7 +13,8 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
 	r.HandleFunc("/Findingimposter/quarantine", createQuarantineHandler(cliCtx)).Methods("POST")
 	r.HandleFunc("/Findingimposter/covid", listCovidHandler(cliCtx, "Findingimposter")).Methods("GET")
 	r.HandleFunc("/Findingimposter/covid", createCovidHandler(cliCtx)).Methods("POST")
-	r.HandleFunc("/Findingimposter/log", listLogHandler(cliCtx, "Findingimposter")).Methods("GET")
+	r.HandleFunc("/Findingimposter/log", listLogHandler(cliCtx, "Findingimposter")).Methods("GET") // all
+	r.HandleFunc("/Findingimposter/log/list", listLogByAddressHandler(cliCtx, "Findingimposter")).Methods("POST") // by address
 	r.HandleFunc("/Findingimposter/log", createLogHandler(cliCtx)).Methods("POST")
 	r.HandleFunc("/Findingimposter/doctor", listDoctorHandler(cliCtx, "Findingimposter")).Methods("GET")
 	r.HandleFunc("/Findingimposter/doctor", createDoctorHandler(cliCtx)).Methods("POST")

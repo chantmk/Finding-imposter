@@ -16,7 +16,6 @@ type createLogRequest struct {
 	Creator string `json:"creator"`
 	LogID string `json:"logID"`
 	PlaceID string `json:"placeID"`
-	// CreatedAt string `json:"createdAt"`
 	Action string `json:"action"`
 	
 }
