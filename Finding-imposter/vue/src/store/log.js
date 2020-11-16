@@ -2,11 +2,13 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import app from "./app.js";
+import random from '../utill/random';
 import { Secp256k1Wallet, SigningCosmosClient, makeCosmoshubPath } from "@cosmjs/launchpad";
 
 Vue.use(Vuex);
 
-const API = "http://localhost:1317";
+const API = "http://localhost:1317"
+const CHAIN_ID = "Findingimposter"
 const ADDRESS_PREFIX = "cosmos"
 const LOCAL_STORAGE_LOG_KEY = "finding-imposter-log-secret"
 const TYPES = [
@@ -89,33 +91,31 @@ export default new Vuex.Store({
     },
     async checkin({ commit, state }, { placeId }) {
       try {
+        console.log(placeId)
         // create new wallet
         const wallet = await Secp256k1Wallet.generate(18)
         const { secret: { data }, address } = wallet
         const client = new SigningCosmosClient(API, address, wallet);
+        const creator = client.senderAddress
         console.log(client)
 
-        // create new log
-        // const logId = "12345"
-        // const newLog = { id: "12345", name: "focus", checkInAt: "13/6/2020 18:30", checkOutAt: null }
-        // const body = state.data.log;
-        // body.push(newLog)
-        // commit("dataSet", { type: "log", body });
-        // const { chain_id } = state;
-        // const creator = state.client.senderAddress;
-        // const base_req = { chain_id, from: creator };
-        // const req = { base_req, creator, ...body };
-        // const body {}
-        // const { data } = await axios.post(`${API}/Findingimposter/log`, {
-        //   body
-        // });
-        // { type: "log", fields: ["place_id", "check_in_at", "check_out_at", ] },
-        // const { msg, fee, memo } = data.value;
-        // console.log(data)
-        // return await state.client.signAndPost(msg, fee, memo);
+        const logID = random()
+        const body = {
+          base_req: { chain_id: CHAIN_ID, from: creator },
+          creator,
+          logID,
+          placeID: placeId,
+          action: "CHECKIN"
+        }
+        const { data: result } = await axios.post(`${API}/Findingimposter/log`, { body });
+        const { ID, placeID, createdAt: checkInAt } = result.value.msg[0].value
+        const newLog = { id: ID, name: placeID, placeId: placeID, createdAt: checkInAt, checkOutAt: null }
+        const _log = state.data.log;
+        _log.push(newLog)
+        commit("dataSet", { type: "log", body });
 
         // store secret in local storage
-        commit("secretsUpdate", { secret: data, logId }); // do we need to store log id
+        commit("secretsUpdate", { secret: data, createdAt: checkInAt}); // do we need to store log id
       } catch(error) {
         console.log(error)
       }

@@ -70,6 +70,7 @@ export default {
       this.$store.log.dispatch("checkout", { logId })
     },
     async checkin() {
+      console.log(this.placeId)
       await this.$store.log.dispatch("checkin", { placeId: this.placeId })
       this.placeId = null
       this.disabled = true
