@@ -208,6 +208,7 @@ export default {
     }
   },
   methods: {
+<<<<<<< Updated upstream
     async signIn() {
       if (this.mnemonicValid && !this.error) {
         const mnemonic = this.passwordClean;
@@ -217,6 +218,17 @@ export default {
             this.error = false;
           }, 1000);
         });
+=======
+    async login() {
+      const mnemonic = this.password.trim();
+      if (bip39.validateMnemonic(mnemonic) && !this.error) {
+        try {
+          const { address } = await this.$store.store.dispatch("accountSignIn", { mnemonic })
+          if(address) this.$router.push('/doctor'); 
+        } catch (error) {
+          console.log(error)
+        }
+>>>>>>> Stashed changes
       }
     }
   }
