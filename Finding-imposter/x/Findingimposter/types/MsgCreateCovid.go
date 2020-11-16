@@ -14,15 +14,17 @@ type MsgCreateCovid struct {
   CovidID string `json:"covidID" yaml:"covidID"`
   CreatedAt string `json:"createdAt" yaml:"createdAt"`
   Status string `json:"status" yaml:"status"`
+  PubKey []string `json:"pubKey" yaml:"pubKey"`
 }
 
-func NewMsgCreateCovid(creator sdk.AccAddress, covidID string, createdAt string, status string) MsgCreateCovid {
+func NewMsgCreateCovid(creator sdk.AccAddress, covidID string, createdAt string, status string, pubKey []string) MsgCreateCovid {
   return MsgCreateCovid{
     ID: uuid.New().String(),
 		Creator: creator,
     CovidID: covidID,
     CreatedAt: createdAt,
-    Status: status,
+	Status: status,
+	PubKey: pubKey,
 	}
 }
 
