@@ -34,6 +34,7 @@ func GetQueryCmd(queryRoute string, cdc *codec.Codec) *cobra.Command {
 			GetCmdListCovid(queryRoute, cdc),
 			GetCmdListLog(queryRoute, cdc),
 			GetCmdListDoctor(queryRoute, cdc),
+			GetCmdListPendingCovid(queryRoute, cdc),
 		)...,
 	)
 
