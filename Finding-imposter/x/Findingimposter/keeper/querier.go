@@ -29,6 +29,8 @@ func NewQuerier(k Keeper) sdk.Querier {
 			return listLog(ctx, k)
 		case types.QueryListDoctor:
 			return listDoctor(ctx, k)
+		case types.QueryListPendingCovid:
+			return listPendingCovid	(ctx, k)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown Findingimposter query endpoint")
 		}
