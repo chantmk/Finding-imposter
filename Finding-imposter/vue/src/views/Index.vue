@@ -1,9 +1,45 @@
 <template>
   <div>
     <app-layout>
-      <app-text type="h1">Findingimposter</app-text>
+      <div class="flex-app">
+      <img class="logo" src="../../assets/logo2.svg" />
       <wallet />
-      <type-list />
+      <div></div>
+      </div>
     </app-layout>
   </div>
 </template>
+
+<script>
+export default {
+  mounted() {
+    if(this.$store.state.account && this.$store.state.account.id)
+      this.$router.push('/doctor'); 
+  },
+  methods: {
+    logout() {
+      console.log('hi')
+    }
+  },
+};
+</script>
+
+<style>
+.flex-app {
+  height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.logo {
+  text-align: center;
+  width: 80%;
+  max-width: 300px;
+}
+.logout {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+</style>
