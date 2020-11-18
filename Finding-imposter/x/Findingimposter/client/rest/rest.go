@@ -19,3 +19,12 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
 	r.HandleFunc("/Findingimposter/doctor", listDoctorHandler(cliCtx, "Findingimposter")).Methods("GET")
 	r.HandleFunc("/Findingimposter/doctor", createDoctorHandler(cliCtx)).Methods("POST")
 }
+
+func isin(address string, list []string) bool {
+    for _, a := range list {
+        if a == address {
+            return true
+        }
+    }
+    return false
+}
