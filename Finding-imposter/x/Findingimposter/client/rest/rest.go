@@ -16,9 +16,10 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
 	r.HandleFunc("/Findingimposter/covid", createCovidHandler(cliCtx)).Methods("POST")
 	r.HandleFunc("/Findingimposter/log", listLogHandler(cliCtx, "Findingimposter")).Methods("GET")
 	r.HandleFunc("/Findingimposter/log", createLogHandler(cliCtx)).Methods("POST")
-	r.HandleFunc("/Findingimposter/log/list", createSpecLogHandler(cliCtx)).Methods("Post")
+	r.HandleFunc("/Findingimposter/log/list", listSpecLogHandler(cliCtx, "Findingimposter")).Methods("Post")
 	r.HandleFunc("/Findingimposter/doctor", listDoctorHandler(cliCtx, "Findingimposter")).Methods("GET")
 	r.HandleFunc("/Findingimposter/doctor", createDoctorHandler(cliCtx)).Methods("POST")
+	r.HandleFunc("/Findingimposter/doctor/list", listSpecDoctorHandler(cliCtx, "Findingimposter")).Methods("Post")
 }
 
 func isin(address string, list []string) bool {
