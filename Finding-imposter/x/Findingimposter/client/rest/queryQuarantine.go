@@ -21,8 +21,9 @@ func listQuarantineHandler(cliCtx context.CLIContext, storeName string) http.Han
 
 type listSpecQuarantine struct {
 	BaseReq rest.BaseReq `json:"base_req"`
-	Address []string `json:address`
+	Address []string `json:"address"`
 }
+
 func listSpecQuarantineHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/list-quarantine", storeName), nil)

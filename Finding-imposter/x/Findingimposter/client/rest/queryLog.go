@@ -22,7 +22,7 @@ func listLogHandler(cliCtx context.CLIContext, storeName string) http.HandlerFun
 
 type listSpecLog struct {
 	BaseReq rest.BaseReq `json:"base_req"`
-	Address []string `json:address`
+	Address []string `json:"address"`
 }
 func listSpecLogHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

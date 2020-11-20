@@ -33,7 +33,7 @@ func listPendingCovidHandler(cliCtx context.CLIContext, storeName string) http.H
 
 type listSpecCovid struct {
 	BaseReq rest.BaseReq `json:"base_req"`
-	Address []string `json:address`
+	Address []string `json:"address"`
 }
 func listSpecCovidHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
