@@ -1,6 +1,7 @@
 package types
 
 import (
+	"time"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/google/uuid"
@@ -11,14 +12,16 @@ var _ sdk.Msg = &MsgCreateQuarantine{}
 type MsgCreateQuarantine struct {
   ID      string
   Creator sdk.AccAddress `json:"creator" yaml:"creator"`
-  StartAt string `json:"startAt" yaml:"startAt"`
-  EndAt string `json:"endAt" yaml:"endAt"`
+  UserAddress sdk.AccAddress `json:"userAddress" yaml:"userAddress"`
+  StartAt time.Time `json:"startAt" yaml:"startAt"`
+  EndAt time.Time `json:"endAt" yaml:"endAt"`
 }
 
-func NewMsgCreateQuarantine(creator sdk.AccAddress, startAt string, endAt string) MsgCreateQuarantine {
+func NewMsgCreateQuarantine(creator sdk.AccAddress,userAddress sdk.AccAddress, startAt time.Time, endAt time.Time) MsgCreateQuarantine {
   return MsgCreateQuarantine{
     ID: uuid.New().String(),
 		Creator: creator,
+	UserAddress: userAddress,
     StartAt: startAt,
     EndAt: endAt,
 	}

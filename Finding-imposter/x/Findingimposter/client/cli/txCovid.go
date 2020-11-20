@@ -21,7 +21,7 @@ func GetCmdCreateCovid(cdc *codec.Codec) *cobra.Command {
 		Args:  cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
       argsCovidID := string(args[0])
-      argsCreatedAt := time.Now().Format("02/01/2006 15:04")
+      argsCreatedAt := time.Now()
 	  argsStatus := string(args[1])
 	  argsPubKey := []string(args[2:])
       

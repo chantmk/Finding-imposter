@@ -1,6 +1,7 @@
 package types
 
 import (
+	"time"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -9,6 +10,6 @@ type Log struct {
 	ID      string         `json:"id" yaml:"id"`
   LogID string `json:"logID" yaml:"logID"`
   PlaceID string `json:"placeID" yaml:"placeID"`
-  CreatedAt string `json:"createdAt" yaml:"createdAt"`
+  CreatedAt time.Time `json:"createdAt" yaml:"createdAt"`
   Action string `json:"action" yaml:"action"`
 }

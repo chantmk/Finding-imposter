@@ -1,6 +1,7 @@
 package types
 
 import (
+	"time"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/google/uuid"
@@ -13,11 +14,11 @@ type MsgCreateLog struct {
   Creator sdk.AccAddress `json:"creator" yaml:"creator"`
   LogID string `json:"logID" yaml:"logID"`
   PlaceID string `json:"placeID" yaml:"placeID"`
-  CreatedAt string `json:"createdAt" yaml:"createdAt"`
+  CreatedAt time.Time `json:"createdAt" yaml:"createdAt"`
   Action string `json:"action" yaml:"action"`
 }
 
-func NewMsgCreateLog(creator sdk.AccAddress, logID string, placeID string, createdAt string, action string) MsgCreateLog {
+func NewMsgCreateLog(creator sdk.AccAddress, logID string, placeID string, createdAt time.Time, action string) MsgCreateLog {
   return MsgCreateLog{
     ID: uuid.New().String(),
 		Creator: creator,

@@ -1,12 +1,14 @@
 package types
 
 import (
+	"time"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 type Quarantine struct {
 	Creator sdk.AccAddress `json:"creator" yaml:"creator"`
 	ID      string         `json:"id" yaml:"id"`
-  StartAt string `json:"startAt" yaml:"startAt"`
-  EndAt string `json:"endAt" yaml:"endAt"`
+  UserAddress sdk.AccAddress `json: "userAddress" yaml:"userAddress"`
+  StartAt time.Time `json:"startAt" yaml:"startAt"`
+  EndAt time.Time `json:"endAt" yaml:"endAt"`
 }

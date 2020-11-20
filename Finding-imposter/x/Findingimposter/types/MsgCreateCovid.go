@@ -1,6 +1,7 @@
 package types
 
 import (
+	"time"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/google/uuid"
@@ -12,12 +13,12 @@ type MsgCreateCovid struct {
   ID      string
   Creator sdk.AccAddress `json:"creator" yaml:"creator"`
   CovidID string `json:"covidID" yaml:"covidID"`
-  CreatedAt string `json:"createdAt" yaml:"createdAt"`
+  CreatedAt time.Time `json:"createdAt" yaml:"createdAt"`
   Status string `json:"status" yaml:"status"`
   PubKey []string `json:"pubKey" yaml:"pubKey"`
 }
 
-func NewMsgCreateCovid(creator sdk.AccAddress, covidID string, createdAt string, status string, pubKey []string) MsgCreateCovid {
+func NewMsgCreateCovid(creator sdk.AccAddress, covidID string, createdAt time.Time, status string, pubKey []string) MsgCreateCovid {
   return MsgCreateCovid{
     ID: uuid.New().String(),
 		Creator: creator,
