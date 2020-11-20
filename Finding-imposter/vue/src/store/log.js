@@ -43,6 +43,7 @@ export default new Vuex.Store({
     },
     secretsUpdate(state, payload) {
       state.secrets = { ...state.secrets, ...payload }
+      console.log("secretsUpdate", state.secrets)
       localStorage.setItem(LOCAL_STORAGE_LOG_KEY, JSON.stringify(state.secrets));
     },
     covidSecretsSet(state, payload) {
@@ -55,7 +56,7 @@ export default new Vuex.Store({
     dataSet(state, { type, body }) {
       console.log(type, body)
       const updated = {};
-      updated[type] = body;
+      updated[type] = body? body:[];
       state.data = { ...state.data, ...updated };
     },
   },
@@ -91,13 +92,13 @@ export default new Vuex.Store({
         base_req: { chain_id: CHAIN_ID, from: creator },
         address,
       }
-      const { data: result } = await axios.post(`${API}/Findingimposter/log/list`, body);
+      const { data: { result } } = await axios.post(`${API}/Findingimposter/log/list`, body);
       commit("dataSet", { type: "log", body: result });
     },
     async getCovid({ dispatch, commit, state }){
       const { data: { result } } = await axios.get(`${API}/Findingimposter/covid`);
       // filter
-      const ownCovidLog = result.filter(i => i.covidID in state.covidSecrets);
+      const ownCovidLog = (result? result:[]).filter(i => i.covidID in state.covidSecrets);
       const covidLog = {};
       ownCovidLog.forEach(i => {
         let data
@@ -121,9 +122,10 @@ export default new Vuex.Store({
       const { data: { result } } = await axios.get(`${API}/Findingimposter/quarantine`);
       console.log("getQuarantine", result)
       // filter
-      const addresses = Object.values(state.secrets).map(i => i.address);
-      const ownQuarantines = result.filter(i => i.userAddress in addresses);
-      await commit("dataSet", { type: "covid", body: ownQuarantines });
+      // const addresses = Object.values(state.secrets).map(i => i.address);
+      // const ownQuarantines = result.filter(i => i.userAddress in addresses);
+      // await commit("dataSet", { type: "covid", body: ownQuarantines });
+      await commit("dataSet", { type: "quarantine", body: result });
     },
     async createLog({}, { client, body }) {
       const { data: result } = await axios.post(`${API}/Findingimposter/log`, body);
@@ -132,7 +134,7 @@ export default new Vuex.Store({
       const { ID, placeID, createdAt } = msg[0].value
       return { id: ID, placeId: placeID, createdAt }
     },
-    async getClient({}, { isNew, secret = "vote vibrant sight autumn language empty caution various height sorry sauce inmate twenty life lazy van acquire horn love satisfy spell width split maple" }) {
+    async getClient({}, { isNew, secret = "feed twenty fossil crawl rotate invest achieve marriage real cliff mistake possible negative prevent surprise vendor evoke pluck nephew copy circle atom bulk weapon" }) {
       let client;
       let _secret;
       if(false && isNew) {
@@ -157,7 +159,6 @@ export default new Vuex.Store({
         const secret = state.secrets[logId].secret;
         const { client } = await dispatch("getClient", { isNew: false, secret })
         const creator = client.senderAddress
-        await dispatch("getLog", { creator })
         // checkout
         const body = {
           base_req: { chain_id: CHAIN_ID, from: creator },
@@ -166,14 +167,11 @@ export default new Vuex.Store({
           action: "CHECKOUT"
         }
         const { createdAt } = await dispatch("createLog", { client, body });
-
         // update log
         const _log = state.data.log;
         const index = _log.map(i => (i.id)).indexOf(logId)
         _log[index].checkOutAt = createdAt
         commit("dataSet", { type: "log", body: _log });
-
-        
       } catch(error) {
         console.log(error)
       }

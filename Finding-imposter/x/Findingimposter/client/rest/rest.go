@@ -11,7 +11,7 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
   // this line is used by starport scaffolding
 	r.HandleFunc("/Findingimposter/quarantine", listQuarantineHandler(cliCtx, "Findingimposter")).Methods("GET")
 	r.HandleFunc("/Findingimposter/quarantine", createQuarantineHandler(cliCtx)).Methods("POST")
-	r.HandleFunc("/Findingimposter/quarantine", listSpecQuarantineHandler(cliCtx, "Findingimposter")).Methods("Post")
+	r.HandleFunc("/Findingimposter/quarantine/list", listSpecQuarantineHandler(cliCtx, "Findingimposter")).Methods("POST")
 	r.HandleFunc("/Findingimposter/covid", listCovidHandler(cliCtx, "Findingimposter")).Methods("GET")
 	r.HandleFunc("/Findingimposter/covid", createCovidHandler(cliCtx)).Methods("POST")
 	r.HandleFunc("/Findingimposter/covid/pending", listPendingCovidHandler(cliCtx, "Findingimposter")).Methods("GET")

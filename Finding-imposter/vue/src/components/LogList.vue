@@ -9,11 +9,11 @@
       </div>
       <div class="table-body">
         <div class="table-body-item" v-for="(log, index) in logs" :key="index">
-            <div style="flex:2">{{ log.name }}</div>
-            <div style="flex:1" class="flex-center">{{ log.checkInAt }}</div>
-            <div style="flex:1" class="flex-center" v-if="!!log.checkOutAt">{{ log.checkOutAt }}</div>
+            <div style="flex:2">{{ place[log.placeId] }}</div>
+            <div style="flex:1" class="flex-center">{{ formatter(log.checkInAt) }}</div>
+            <div style="flex:1" class="flex-center" v-if="!!log.checkOutAt">{{ formatter(log.checkOutAt) }}</div>
             <div class="flex-center" style="flex:1;:center" v-else>
-                <div class="check-out-button" @click="() => checkout(log.logID)">
+                <div class="check-out-button" @click="() => checkout(log.id)">
                     +
                 </div>
             </div>
@@ -27,8 +27,9 @@
             :value="placeName"
             disabled
         />
-        <button class="check-in-button" @click="checkin" :disabled="disabled">
-          CHECK IN
+        <button class="check-in-button" @click="checkin" :disabled="disabled || loading">
+          <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+          <div v-else>CHECK IN</div>
         </button>
     </div>
   </div>
@@ -36,28 +37,31 @@
 
 <script>
 import axios from 'axios'
+import moment from 'moment'
 export default {
   data: () => {
     return {
         placeId: null,
         placeName: null,
         disabled: true,
+        loading: false,
+        place: {},
     };
   },
   async mounted() {
     const { id } = this.$route.query
-    if(id) {
-      try {
-        const { data } = await axios.get(`http://localhost:3000/place?id=${id}`)
-        if(data.length === 1) {
-          const { name, _id } = data[0]
-          this.placeId = _id
-          this.placeName = name
-          this.disabled = false
-        }
-      } catch(error) {
-        console.log(error)
-      }
+    try {
+      const { data } = await axios.get(`http://localhost:3000/place`)
+      data.forEach(i => {
+        this.place[i._id] = i.name
+      });
+      if(id && id in this.place) {
+        this.placeId = id
+        this.placeName = this.place[id]
+        this.disabled = false
+      } 
+    } catch(error) {
+      console.log(error)
     }
   },
   computed: {
@@ -69,12 +73,17 @@ export default {
     checkout(logId) {
       this.$store.log.dispatch("checkout", { logId })
     },
+    formatter(s) {
+      return new moment(s).format('DD/MM/yyyy hh:mm');
+    },
     async checkin() {
-      console.log(this.placeId)
+      this.loading = true;
       await this.$store.log.dispatch("checkin", { placeId: this.placeId })
       this.placeId = null
+      this.placeName = null
       this.disabled = true
       this.$router.push('/main'); 
+      this.loading = false;
     }
   },
 };
@@ -152,6 +161,7 @@ input:disabled {
   color: #FFFFFF;
   padding: 2px 8px;
   border-radius: 5px;
+  width: 80px;
   cursor: pointer;
   border: none;
 }

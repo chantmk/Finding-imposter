@@ -19,12 +19,35 @@
     </div>
     <div class="divider"></div>
     <div class="check-in">
-        <button class="report-button" @click="report">
-          REPORT
+        <button class="report-button" @click="report" :disabled="loading">
+          <i class="fa fa-spinner fa-spin" v-if="loading"></i>
+          <div v-else>REPORT</div>
         </button>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data: () => {
+    return {
+      loading: false,
+    };
+  },
+  computed: {
+    logs() {
+      return this.$store.log.state.data.covid
+    },
+  },
+  methods: {
+    async report() {
+      this.loading = true;
+      await this.$store.log.dispatch("report")
+      this.loading = false;
+    }
+  },
+};
+</script>
 
 <style scoped>
 .header {
@@ -88,20 +111,6 @@ input {
   border-radius: 5px;
   cursor: pointer;
   border: none;
+  width: 72px;
 }
 </style>
-
-<script>
-export default {
-  computed: {
-    logs() {
-      return this.$store.log.state.data.covid
-    },
-  },
-  methods: {
-    report() {
-      this.$store.log.dispatch("report")
-    }
-  },
-};
-</script>
