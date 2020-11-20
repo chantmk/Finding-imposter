@@ -3,7 +3,7 @@ package rest
 import (
 	"net/http"
 	"time"
-
+	"fmt"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/types/rest"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
@@ -38,8 +38,40 @@ func createCovidHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		}
 
 		createdAt := time.Now()
-
 		msg := types.NewMsgCreateCovid(creator,  req.CovidID,  createdAt,  req.Status, req.PubKey)
-		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
+		check := isDoctor(cliCtx, w, creator.String())
+		if req.Status == "PENDING" {
+			utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
+		} else if req.Status == "REJECTED" {
+			if check {
+				utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
+			} else {
+				rest.WriteErrorResponse(w, http.StatusBadRequest, "Wrong user, you must be a doctor")
+			}
+		} else if req.Status == "APPROVED" {
+			if check {
+				utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
+			} else {
+				rest.WriteErrorResponse(w, http.StatusBadRequest, "Wrong user, you must be a doctor")
+			}
+		} else {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, "Invalid status")
+		}
 	}
+}
+
+func isDoctor(cliCtx context.CLIContext, w http.ResponseWriter, creator string) (bool) {
+	res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/list-doctor", "Findingimposter"), nil)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusNotFound, err.Error())
+			return false
+		}
+	var out []types.Doctor
+	cliCtx.Codec.MustUnmarshalJSON(res, &out)
+	for _, doctor := range out {
+		if doctor.Address == creator {
+			return true
+		}
+	}
+	return false
 }
