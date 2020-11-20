@@ -8,8 +8,8 @@
       </div>
       <div class="table-body">
         <div class="table-body-item" v-for="(log, index) in logs" :key="index">
-            <div style="flex:1" class="flex-center">{{ log.startAt }}</div>
-            <div style="flex:1" class="flex-center" >{{ log.endAt }}</div>
+            <div style="flex:1" class="flex-center">{{ formatter(log.startAt) }}</div>
+            <div style="flex:1" class="flex-center" >{{ formatter(log.endAt) }}</div>
         </div>
       </div>
     </div>
@@ -18,10 +18,16 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   computed: {
     logs() {
       return this.$store.log.state.data.quarantine
+    },
+  },
+  methods: {
+    formatter(s) {
+      return new moment(s).format('DD/MM/yyyy hh:mm');
     },
   },
 };

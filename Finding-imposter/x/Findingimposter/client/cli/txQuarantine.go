@@ -15,9 +15,9 @@ import (
 
 func GetCmdCreateQuarantine(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "create-quarantine [startAt] [endAt]",
+		Use:   "create-quarantine [userAddress]",
 		Short: "Creates a new quarantine",
-		Args:  cobra.MinimumNArgs(2),
+		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			argsUserAddress, err_addr := sdk.AccAddressFromBech32(string(args[0]))
 			if err_addr != nil {
