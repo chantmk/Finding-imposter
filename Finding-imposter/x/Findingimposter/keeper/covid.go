@@ -11,7 +11,7 @@ func (k Keeper) CreateCovid(ctx sdk.Context, covid types.Covid) {
 	key := []byte(types.CovidPrefix + covid.ID)
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(covid)
 	checkDoctor := isDoctor(ctx, k, covid.Creator.String())
-	if covid.Status == "APPROVE" {
+	if covid.Status == "APPROVED" {
 		if checkDoctor {
 			createQuarantineByCovid(ctx, k, covid)
 			store.Set(key, value)
@@ -71,6 +71,7 @@ func createQuarantineByCovid(ctx sdk.Context, k Keeper, covid types.Covid) {
 				}
 			}
 			//create quarantine
+
 		} 
 	}
 }
