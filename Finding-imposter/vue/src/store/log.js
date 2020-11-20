@@ -1,47 +1,36 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import app from "./app.js";
 import random from '../utill/random';
 import { Secp256k1Wallet, SigningCosmosClient, makeCosmoshubPath } from "@cosmjs/launchpad";
 
 Vue.use(Vuex);
 
+const getStatus = (a, b) => {
+  if(a == "PENDING") return b;
+  if(b == "PENDING") return a;
+  return a;
+}
 const API = "http://localhost:1317"
 const CHAIN_ID = "Findingimposter"
 const ADDRESS_PREFIX = "cosmos"
 const LOCAL_STORAGE_LOG_KEY = "finding-imposter-log-secret"
+const LOCAL_STORAGE_COVID_KEY = "finding-imposter-covid-secret"
 const TYPES = [
   { type: "quarantine", fields: ["user_id", "start_at", "end_at", ] },
   { type: "covid", fields: ["status", "user_id", ] },
   { type: "log", fields: ["place_id", "check_in_at", "check_out_at", ] },
 ]
 const mock = {
-  log: [
-    {
-      id: "123",
-      name: "Engineering library",
-      checkInAt: "13/6/2020 18:30",
-      checkOutAt: null,
-    }
-  ],
-  quarantine: [
-    {
-      startAt: "13/6/2020 18:30",
-      endAt: "13/6/2020 18:30",
-    },
-  ],
-  covid: [
-    {
-      status: "REJECTED",
-      reportAt: "13/6/2020 18:30",
-    },
-  ]
+  log: [],
+  quarantine: [],
+  covid: []
 }
 
 export default new Vuex.Store({
   state: {
-    secrets: [],
+    secrets: {},
+    covidSecrets: {},
     data: {
       log: [],
       quarantine: [],
@@ -49,14 +38,22 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    secretsSet(state, { secrets }) {
-      state.secrets = secrets;
+    secretsSet(state, payload) {
+      state.secrets = payload;
     },
     secretsUpdate(state, payload) {
-      state.secrets.push(payload) 
+      state.secrets = { ...state.secrets, ...payload }
       localStorage.setItem(LOCAL_STORAGE_LOG_KEY, JSON.stringify(state.secrets));
     },
+    covidSecretsSet(state, payload) {
+      state.covidSecrets = payload;
+    },
+    covidSecretsUpdate(state, payload) {
+      state.covidSecrets = { ...state.covidSecrets, ...payload }
+      localStorage.setItem(LOCAL_STORAGE_COVID_KEY, JSON.stringify(state.covidSecrets));
+    },
     dataSet(state, { type, body }) {
+      console.log(type, body)
       const updated = {};
       updated[type] = body;
       state.data = { ...state.data, ...updated };
@@ -64,40 +61,104 @@ export default new Vuex.Store({
   },
   actions: {
     async init({ commit, dispatch }) {
+      // reset local storage
+      // remove 14-day-old address
+      // localStorage.setItem(LOCAL_STORAGE_LOG_KEY, JSON.stringify({ }));
+      // localStorage.setItem(LOCAL_STORAGE_COVID_KEY, JSON.stringify({ }));
+
+      // get local storage : log secret
       const _secrets = localStorage.getItem(LOCAL_STORAGE_LOG_KEY);
-      console.log(_secrets)
-      let secrets
-      if(_secrets) secrets = JSON.parse(_secrets)
-      else secrets = []
-      commit("secretsSet", { secrets });
+      let secrets = JSON.parse(_secrets)
+      commit("secretsSet", secrets);
+
+      // get local storage : covid secret
+      const _covidSecrets = localStorage.getItem(LOCAL_STORAGE_COVID_KEY);
+      let covidSecrets = JSON.parse(_covidSecrets)
+      commit("covidSecretsSet", covidSecrets);
 
       // get logs
-      await dispatch("getData");
+      await dispatch("getLog");
+      await dispatch("getCovid");
+      await dispatch("getQuarantine");
     },
-    async getData({ commit }) {
-      TYPES.forEach(({ type }) => {
-        const body = mock[type]
-        commit("dataSet", { type, body });
-      });
+    async getLog({ dispatch, commit, state }){
+      const { client } = await dispatch("getClient", { isNew: true })
+      const creator = client.senderAddress
+      const address = Object.values(state.secrets).map(i => i.address)
+      console.log(state.secrets)
+      console.log(address)
+      const body = {
+        base_req: { chain_id: CHAIN_ID, from: creator },
+        address,
+      }
+      const { data: result } = await axios.post(`${API}/Findingimposter/log/list`, body);
+      commit("dataSet", { type: "log", body: result });
+    },
+    async getCovid({ dispatch, commit, state }){
+      const { data: { result } } = await axios.get(`${API}/Findingimposter/covid`);
+      // filter
+      const ownCovidLog = result.filter(i => i.covidID in state.covidSecrets);
+      const covidLog = {};
+      ownCovidLog.forEach(i => {
+        let data
+        if(i.status != "PENDING") {
+          data = {
+            updatedAt: i.createdAt,
+            status: i.status,
+            updatedId: i.id,
+            doctor: i.creator
+          }
+        } else {
+          const { status, ..._data} = i
+          data = _data
+        }
+        if(i.covidID in covidLog) covidLog[i.covidID] = { status: "PENDING",...covidLog[i.covidID], ...data }
+        else covidLog[i.covidID] = { status: "PENDING", ...data }
+      })
+      await commit("dataSet", { type: "covid", body: Object.values(covidLog) });
+    },
+    async getQuarantine({ dispatch, commit, state }){
+      const { data: { result } } = await axios.get(`${API}/Findingimposter/quarantine`);
+      console.log("getQuarantine", result)
+      // filter
+      const addresses = Object.values(state.secrets).map(i => i.address);
+      const ownQuarantines = result.filter(i => i.userAddress in addresses);
+      await commit("dataSet", { type: "covid", body: ownQuarantines });
     },
     async createLog({}, { client, body }) {
       const { data: result } = await axios.post(`${API}/Findingimposter/log`, body);
       const { msg, fee, memo } = result.value;
-      // await client.signAndPost(msg, fee, memo);
+      await client.signAndPost(msg, fee, memo);
       const { ID, placeID, createdAt } = msg[0].value
       return { id: ID, placeId: placeID, createdAt }
     },
-    async checkout({ dispatch, commit, state }, { logId }) {
-      console.log(state.secrets)
-      const secret = "churn scrub shrimp course render frost length dinosaur canyon search fog relax belt give drive trouble shove easily"
-      try {
-        // create new wallet
+    async getClient({}, { isNew, secret = "vote vibrant sight autumn language empty caution various height sorry sauce inmate twenty life lazy van acquire horn love satisfy spell width split maple" }) {
+      let client;
+      let _secret;
+      if(false && isNew) {
+        const wallet = await Secp256k1Wallet.generate(18)
+        const { secret: { data }, address } = wallet;
+        _secret = data
+        client = new SigningCosmosClient(API, address, wallet);
+        
+      } else {
         const wallet = await Secp256k1Wallet.fromMnemonic(secret, makeCosmoshubPath(0), ADDRESS_PREFIX);
-        const { secret: { data }, address } = wallet
-        const client = new SigningCosmosClient(API, address, wallet);
-        console.log(client, wallet)
+        const { secret: { data }, address } = wallet;
+        _secret = data
+        client = new SigningCosmosClient(API, address, wallet);
+      }
+      return { client, secret: _secret }
+    },
+    async checkout({ dispatch, commit, state }, { logId }) {
+      try {
+        // get client
+        console.log(state.secrets)
+        console.log(logId, state.secrets[logId])
+        const secret = state.secrets[logId].secret;
+        const { client } = await dispatch("getClient", { isNew: false, secret })
         const creator = client.senderAddress
-
+        await dispatch("getLog", { creator })
+        // checkout
         const body = {
           base_req: { chain_id: CHAIN_ID, from: creator },
           creator,
@@ -105,23 +166,25 @@ export default new Vuex.Store({
           action: "CHECKOUT"
         }
         const { createdAt } = await dispatch("createLog", { client, body });
+
+        // update log
         const _log = state.data.log;
         const index = _log.map(i => (i.id)).indexOf(logId)
         _log[index].checkOutAt = createdAt
         commit("dataSet", { type: "log", body: _log });
+
+        
       } catch(error) {
         console.log(error)
       }
-
     },
     async checkin({ dispatch, commit, state }, { placeId }) {
       try {
         // create new wallet
-        const wallet = await Secp256k1Wallet.generate(18)
-        const { secret: { data }, address } = wallet
-        const client = new SigningCosmosClient(API, address, wallet);
+        const { client, secret } = await dispatch("getClient", { isNew: true })
         const creator = client.senderAddress
-        console.log(client, wallet)
+
+        // checkin        
         const logID = random()
         const body = {
           base_req: { chain_id: CHAIN_ID, from: creator },
@@ -130,47 +193,58 @@ export default new Vuex.Store({
           placeID: placeId,
           action: "CHECKIN"
         }
-        const { id, createdAt } = await dispatch("createLog", { client, body });
+        const { createdAt } = await dispatch("createLog", { client, body });
 
-        const newLog = { id, name: placeId, placeId, checkInAt: createdAt, checkOutAt: null }
+        // update log
+        const newLog = { id: logID, name: placeId, placeId, checkInAt: createdAt, checkOutAt: null }
         const _log = state.data.log;
         _log.push(newLog)
         commit("dataSet", { type: "log", body: _log });
 
         // store secret in local storage
-        commit("secretsUpdate", { secret: data, createdAt, logId: logID });
+        commit("secretsUpdate", { [logID]: { secret, createdAt, address: creator }});
       } catch(error) {
         console.log(error)
       }
     },
-    async report({ commit, state }) {
-      // create new wallet
-      const wallet = await Secp256k1Wallet.generate(18)
-      const { secret: { data }, address } = wallet
-      
-      // create new covid
-      const newCovid = { status: "PENDING",  reportAt: "13/6/2020 18:30" }
-      const newData = state.data.covid;
-      newData.push(newCovid)
-      commit("dataSet", { type: "covid", body: newData });
+    async report({ dispatch, commit, state }) {
+      try {
+        // create new wallet
+        const { client, secret } = await dispatch("getClient", { isNew: true })
+        const creator = client.senderAddress
+        
+        // create new covid
+        const covidID = random()
+        const body = {
+          base_req: {
+            chain_id: "Findingimposter",
+            from: creator
+          },
+          creator,
+          covidID,
+          status: "PENDING",
+          pubKey: Object.values(state.secrets).map(i => i.address),
+        }
+        const { data: result } = await axios.post(`${API}/Findingimposter/covid`, body);
+        const { msg, fee, memo } = result.value;
+        await client.signAndPost(msg, fee, memo);
 
-      const covidID = random()
-      const pubKey = state.data[index].pubKey
-      const creator = state.client
-      const body = {
-        base_req: {
-          chain_id: "Findingimposter",
-          from: creator.senderAddress
-        },
-        creator: creator.senderAddress,
-        covidID,
-        status: "PENDING",
-        pubKey,
+        // update covid
+        const createdAt = "13/6/2020 18:30"
+        const newCovid = { covidID, status: "PENDING",  reportAt: createdAt }
+        const newData = state.data.covid;
+        newData.push(newCovid)
+        commit("dataSet", { type: "covid", body: newData });
+
+        // store secret in local storage
+        commit("covidSecretsUpdate", { [covidID]: { secret, createdAt, address: creator }});
+      } catch (error) {
+        console.log(error)
       }
-      const { data: result } = await axios.post(`${API}/Findingimposter/covid`, body);
-      const { msg, fee, memo } = result.value;
-      await state.client.signAndPost(msg, fee, memo);
 
     },
   },
 });
+
+
+

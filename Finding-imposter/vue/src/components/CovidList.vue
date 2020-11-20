@@ -3,13 +3,17 @@
     <div class="header">Covid</div>
     <div class="table">
       <div class="table-header row">
+        <div style="flex:1">ID</div>
         <div style="flex:1" class="flex-center">Status</div>
-        <div style="flex:1" class="flex-center">Report at</div>
+        <!-- <div style="flex:1" class="flex-center">Report at</div>
+        <div style="flex:1" class="flex-center">Update at</div> -->
       </div>
       <div class="table-body">
         <div class="table-body-item" v-for="(log, index) in logs" :key="index">
-            <div style="flex:1" class="flex-center">{{ log.status }}</div>
-            <div style="flex:1" class="flex-center">{{ log.reportAt }}</div>
+            <div style="flex:1" class="hide">{{ log.covidID }}</div>
+            <div style="flex:1" class="hide flex-center">{{ log.status }}</div>
+            <!-- <div style="flex:1" class="hide flex-center">{{ log.createdAt }}</div>
+            <div style="flex:1" class="hide flex-center">{{ log.updatedAt }}</div> -->
         </div>
       </div>
     </div>
@@ -62,6 +66,9 @@
 .check-in {
     display: flex;
     justify-content: flex-end;
+}
+.hide {
+  overflow: hidden;
 }
 input {
     border: 1px solid #E7E7E7;
