@@ -44,3 +44,30 @@ func GetCmdListPendingCovid(queryRoute string, cdc *codec.Codec) *cobra.Command 
 		},
 	}
 }
+
+func GetCmdListSpecCovid(queryRoute string, cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "list-spec-covid [address] ...",
+		Short: "list specific address covid",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/"+types.QueryListCovid, queryRoute), nil)
+			if err != nil {
+				fmt.Printf("could not list Covid\n%s\n", err.Error())
+				return nil
+			}
+			var out []types.Covid
+			cdc.MustUnmarshalJSON(res, &out)
+
+			var filteredOut []types.Covid
+			for _, covid := range out {
+				if isin(covid.Creator.String(), args) {
+					filteredOut = append(filteredOut, covid)
+				}
+			}
+			return cliCtx.PrintOutput(filteredOut)
+		},
+	}
+}
+
+

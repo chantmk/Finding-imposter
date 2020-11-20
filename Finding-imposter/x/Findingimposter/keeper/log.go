@@ -25,3 +25,4 @@ func listLog(ctx sdk.Context, k Keeper) ([]byte, error) {
   res := codec.MustMarshalJSONIndent(k.cdc, logList)
   return res, nil
 }
+

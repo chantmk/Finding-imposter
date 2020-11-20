@@ -45,7 +45,7 @@ export default new Vuex.Store({
     //   commit("chainIdSet", { chain_id: node_info.network });
     // },
     async getData({ state, commit }) {
-      const { data } = await axios.get(`${API}/Findingimposter/pendingCovid`)
+      const { data } = await axios.get(`${API}/Findingimposter/covid/pending`)
       commit("dataSet", { data: data.result })
     },
     removeCovidId({ state, commit }, { index }) {

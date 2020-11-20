@@ -31,12 +31,24 @@ func GetQueryCmd(queryRoute string, cdc *codec.Codec) *cobra.Command {
 		flags.GetCommands(
       // this line is used by starport scaffolding
 			GetCmdListQuarantine(queryRoute, cdc),
+			GetCmdListSpecQuarantine(queryRoute, cdc),
 			GetCmdListCovid(queryRoute, cdc),
+			GetCmdListSpecCovid(queryRoute, cdc),
 			GetCmdListLog(queryRoute, cdc),
 			GetCmdListDoctor(queryRoute, cdc),
 			GetCmdListPendingCovid(queryRoute, cdc),
+			GetCmdListSpecLog(queryRoute, cdc),
 		)...,
 	)
 
 	return FindingimposterQueryCmd
+}
+
+func isin(address string, list []string) bool {
+    for _, a := range list {
+        if a == address {
+            return true
+        }
+    }
+    return false
 }
