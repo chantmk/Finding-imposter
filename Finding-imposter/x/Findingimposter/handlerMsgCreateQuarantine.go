@@ -10,6 +10,7 @@ func handleMsgCreateQuarantine(ctx sdk.Context, k keeper.Keeper, msg types.MsgCr
 	var quarantine = types.Quarantine{
 		Creator: msg.Creator,
 		ID:      msg.ID,
+	UserAddress: msg.UserAddress,
     StartAt: msg.StartAt,
     EndAt: msg.EndAt,
 	}

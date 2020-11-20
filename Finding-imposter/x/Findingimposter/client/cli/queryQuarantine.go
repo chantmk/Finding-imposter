@@ -43,7 +43,7 @@ func GetCmdListSpecQuarantine(queryRoute string, cdc *codec.Codec) *cobra.Comman
 
 			var filteredOut []types.Quarantine
 			for _, quarantine := range out {
-				if isin(quarantine.Creator.String(), args) {
+				if isin(quarantine.UserAddress.String(), args) {
 					filteredOut = append(filteredOut, quarantine)
 				}
 			}
