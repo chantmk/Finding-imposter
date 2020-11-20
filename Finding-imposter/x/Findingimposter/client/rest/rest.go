@@ -15,10 +15,10 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
 	r.HandleFunc("/Findingimposter/covid", listCovidHandler(cliCtx, "Findingimposter")).Methods("GET")
 	r.HandleFunc("/Findingimposter/covid", createCovidHandler(cliCtx)).Methods("POST")
 	r.HandleFunc("/Findingimposter/covid/pending", listPendingCovidHandler(cliCtx, "Findingimposter")).Methods("GET")
-	r.HandleFunc("/Findingimposter/covid/list", listSpecCovidHandler(cliCtx, "Findingimposter")).Methods("Post")
+	r.HandleFunc("/Findingimposter/covid/list", listSpecCovidHandler(cliCtx, "Findingimposter")).Methods("POST")
 	r.HandleFunc("/Findingimposter/log", listLogHandler(cliCtx, "Findingimposter")).Methods("GET")
 	r.HandleFunc("/Findingimposter/log", createLogHandler(cliCtx)).Methods("POST")
-	r.HandleFunc("/Findingimposter/log/list", listSpecLogHandler(cliCtx, "Findingimposter")).Methods("Post")
+	r.HandleFunc("/Findingimposter/log/list", listSpecLogHandler(cliCtx, "Findingimposter")).Methods("POST")
 	r.HandleFunc("/Findingimposter/doctor", listDoctorHandler(cliCtx, "Findingimposter")).Methods("GET")
 	r.HandleFunc("/Findingimposter/doctor", createDoctorHandler(cliCtx)).Methods("POST")
 }
