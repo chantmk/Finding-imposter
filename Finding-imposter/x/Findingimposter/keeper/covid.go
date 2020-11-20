@@ -18,8 +18,10 @@ func (k Keeper) CreateCovid(ctx sdk.Context, covid types.Covid) {
 		}
 	} else if covid.Status == "REJECTED" {
 		if checkDoctor {
-			store.Set(key,value)
+			store.Set(key, value)
 		}
+	} else if covid.Status == "PENDING" {
+		store.Set(key, value)
 	}
 }
 
@@ -58,9 +60,18 @@ func createQC(ctx sdk.Context, k Keeper, covid types.Covid) {
 	for ; iterator.Valid(); iterator.Next() {
 		var log types.Log
 		k.cdc.MustUnmarshalBinaryLengthPrefixed(store.Get(iterator.Key()), &log)
-		// for _, covidLog := range logList {
-		// 	if 
-		// } 
+		for _, covidLog := range logList {
+			if covidLog.Action == "CHECKIN" {
+				if log.Action == "CHECKOUT" && log.CreatedAt.Before(covidLog.CreatedAt) {
+					continue
+				}
+			} else if covidLog.Action == "CHECKOUT" {
+				if log.Action == "CHECKIN" && log.CreatedAt.After(covidLog.CreatedAt){
+					continue
+				}
+			}
+			//create quarantine
+		} 
 	}
 }
 func listCovid(ctx sdk.Context, k Keeper) ([]byte, error) {
