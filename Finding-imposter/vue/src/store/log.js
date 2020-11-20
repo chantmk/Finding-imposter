@@ -86,14 +86,31 @@ export default new Vuex.Store({
       const { client } = await dispatch("getClient", { isNew: true })
       const creator = client.senderAddress
       const address = Object.values(state.secrets).map(i => i.address)
-      console.log(state.secrets)
-      console.log(address)
       const body = {
         base_req: { chain_id: CHAIN_ID, from: creator },
         address,
       }
       const { data: { result } } = await axios.post(`${API}/Findingimposter/log/list`, body);
-      commit("dataSet", { type: "log", body: result });
+      const log = {}
+      result.forEach(i => {
+        if(!(i.logID in log)) log[i.logID] = {}
+        if(i.action == "CHECKOUT") 
+          log[i.logID] = { 
+            ...log[i.logID], 
+            checkOutAt: i.createdAt,
+            checkOutId: i.id,
+          }
+        else if(i.action == "CHECKIN") 
+          log[i.logID] = { 
+            ...log[i.logID], 
+            logID: i.logID,
+            checkInAt: i.createdAt,
+            id: i.id,
+            placeID: i.placeID,
+            creator: i.creator
+          }
+      })
+      commit("dataSet", { type: "log", body: Object.values(log) });
     },
     async getCovid({ dispatch, commit, state }){
       const { data: { result } } = await axios.get(`${API}/Findingimposter/covid`);
@@ -119,7 +136,14 @@ export default new Vuex.Store({
       await commit("dataSet", { type: "covid", body: Object.values(covidLog) });
     },
     async getQuarantine({ dispatch, commit, state }){
-      const { data: { result } } = await axios.get(`${API}/Findingimposter/quarantine`);
+      const { client } = await dispatch("getClient", { isNew: true })
+      const creator = client.senderAddress
+      const address = Object.values(state.secrets).map(i => i.address)
+      const body = {
+        base_req: { chain_id: CHAIN_ID, from: creator },
+        address,
+      }
+      const { data: { result } } = await axios.post(`${API}/Findingimposter/quarantine/list`, body);
       console.log("getQuarantine", result)
       // filter
       // const addresses = Object.values(state.secrets).map(i => i.address);
@@ -134,7 +158,7 @@ export default new Vuex.Store({
       const { ID, placeID, createdAt } = msg[0].value
       return { id: ID, placeId: placeID, createdAt }
     },
-    async getClient({}, { isNew, secret = "feed twenty fossil crawl rotate invest achieve marriage real cliff mistake possible negative prevent surprise vendor evoke pluck nephew copy circle atom bulk weapon" }) {
+    async getClient({}, { isNew, secret = "pet symptom fitness remain youth boat skull settle cricket move airport pear keen lottery eager lumber sheriff trumpet cricket snow tourist all gossip coil" }) {
       let client;
       let _secret;
       if(false && isNew) {
@@ -169,7 +193,7 @@ export default new Vuex.Store({
         const { createdAt } = await dispatch("createLog", { client, body });
         // update log
         const _log = state.data.log;
-        const index = _log.map(i => (i.id)).indexOf(logId)
+        const index = _log.map(i => (i.logID)).indexOf(logId)
         _log[index].checkOutAt = createdAt
         commit("dataSet", { type: "log", body: _log });
       } catch(error) {
@@ -194,7 +218,7 @@ export default new Vuex.Store({
         const { createdAt } = await dispatch("createLog", { client, body });
 
         // update log
-        const newLog = { id: logID, name: placeId, placeId, checkInAt: createdAt, checkOutAt: null }
+        const newLog = { logID, placeID: placeId, checkInAt: createdAt, checkOutAt: null }
         const _log = state.data.log;
         _log.push(newLog)
         commit("dataSet", { type: "log", body: _log });

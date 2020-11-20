@@ -9,11 +9,11 @@
       </div>
       <div class="table-body">
         <div class="table-body-item" v-for="(log, index) in logs" :key="index">
-            <div style="flex:2">{{ place[log.placeId] }}</div>
+            <div style="flex:2">{{ place[log.placeID] }}</div>
             <div style="flex:1" class="flex-center">{{ formatter(log.checkInAt) }}</div>
             <div style="flex:1" class="flex-center" v-if="!!log.checkOutAt">{{ formatter(log.checkOutAt) }}</div>
             <div class="flex-center" style="flex:1;:center" v-else>
-                <div class="check-out-button" @click="() => checkout(log.id)">
+                <div class="check-out-button" @click="() => checkout(log.logID)">
                     +
                 </div>
             </div>
@@ -41,11 +41,11 @@ import moment from 'moment'
 export default {
   data: () => {
     return {
-        placeId: null,
-        placeName: null,
-        disabled: true,
-        loading: false,
-        place: {},
+      placeId: null,
+      placeName: null,
+      disabled: true,
+      loading: false,
+      place: {},
     };
   },
   async mounted() {
@@ -66,7 +66,12 @@ export default {
   },
   computed: {
     logs() {
-      return this.$store.log.state.data.log
+      const logs = this.$store.log.state.data.log.sort((a,b) => {
+        const A = new moment(a.checkInAt)
+        const B = new moment(b.checkInAt)
+        return B - A;
+      })
+      return logs
     },
   },
   methods: {
@@ -92,15 +97,14 @@ export default {
 
 <style scoped>
 .log-list {
-
+  
 }
 .header {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 .table {
-    
 }
 .table-header {
     display: flex;
@@ -110,7 +114,8 @@ export default {
     /* font-weight: bold; */
 }
 .table-body {
-    
+  max-height: 300px;
+  overflow: scroll;  
 }
 .table-body-item {
     display: flex;

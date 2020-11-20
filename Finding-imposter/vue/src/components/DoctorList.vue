@@ -8,7 +8,7 @@
         <div class="table-body-item" v-for="(log, index) in logs" :key="index">
             <div style="flex:2">
               <div>{{ log.covidID }}</div>
-              <div style="font-size:12px;color:#898989;">{{ log.createdAt }}</div>
+              <div style="font-size:12px;color:#898989;">{{ formatter(log.createdAt) }}</div>
             </div>
             <div class="flex-center" >
                 <div class="action-button red" @click="() => reject({ id: log.covidID, index })">
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import axios from 'axios'
 export default {
   data() {
@@ -62,6 +63,9 @@ export default {
     },
     reject({ id, index }) {
       this.$store.store.dispatch("action", { status: "REJECTED", id, index })
+    },
+    formatter(s) {
+      return new moment(s).format('DD/MM/yyyy hh:mm');
     },
     async request() {
       try {
