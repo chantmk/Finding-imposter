@@ -11,14 +11,16 @@ var _ sdk.Msg = &MsgCreateQuarantine{}
 type MsgCreateQuarantine struct {
   ID      string
   Creator sdk.AccAddress `json:"creator" yaml:"creator"`
+  UserAddress sdk.AccAddress `json:"userAddress" yaml:"userAddress"`
   StartAt string `json:"startAt" yaml:"startAt"`
   EndAt string `json:"endAt" yaml:"endAt"`
 }
 
-func NewMsgCreateQuarantine(creator sdk.AccAddress, startAt string, endAt string) MsgCreateQuarantine {
+func NewMsgCreateQuarantine(creator sdk.AccAddress,userAddress sdk.AccAddress, startAt string, endAt string) MsgCreateQuarantine {
   return MsgCreateQuarantine{
     ID: uuid.New().String(),
 		Creator: creator,
+	UserAddress: userAddress,
     StartAt: startAt,
     EndAt: endAt,
 	}

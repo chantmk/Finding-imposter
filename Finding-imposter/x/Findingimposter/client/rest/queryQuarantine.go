@@ -47,7 +47,7 @@ func listSpecQuarantineHandler(cliCtx context.CLIContext, storeName string) http
 
 		var filteredOut []types.Quarantine
 			for _, quarantine := range out {
-				if isin(quarantine.Creator.String(),address) {
+				if isin(quarantine.UserAddress.String(),address) {
 					filteredOut = append(filteredOut, quarantine)
 				}
 			}
