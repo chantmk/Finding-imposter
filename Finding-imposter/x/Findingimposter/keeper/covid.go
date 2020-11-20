@@ -29,19 +29,24 @@ func listCovid(ctx sdk.Context, k Keeper) ([]byte, error) {
 func listPendingCovid(ctx sdk.Context, k Keeper)([]byte, error) {
 	var covidList []types.Covid
 	PENDING := "PENDING"
-	// var visitedCovidID map[string]bool
 	visitedCovidID := make(map[string]bool)
 	store := ctx.KVStore(k.storeKey)
 	iterator := sdk.KVStorePrefixIterator(store, []byte(types.CovidPrefix))
+	var covid types.Covid
 	for ; iterator.Valid(); iterator.Next() {
-		var covid types.Covid
 		k.cdc.MustUnmarshalBinaryLengthPrefixed(store.Get(iterator.Key()), &covid)
 		if covid.Status != PENDING {
 			visitedCovidID[covid.CovidID] = true
-		} else if (covid.Status == PENDING && !visitedCovidID[covid.CovidID]){
+		}
+	}
+	iterator2 := sdk.KVStorePrefixIterator(store, []byte(types.CovidPrefix))
+	for ; iterator2.Valid(); iterator2.Next() {
+		k.cdc.MustUnmarshalBinaryLengthPrefixed(store.Get(iterator2.Key()), &covid)
+		if (covid.Status == PENDING && !visitedCovidID[covid.CovidID]){
 			covidList = append(covidList, covid)
 		}
-	}	
+	}
+
 		res := codec.MustMarshalJSONIndent(k.cdc, covidList)
   		return res, nil
 }
