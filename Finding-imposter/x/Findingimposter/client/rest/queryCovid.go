@@ -54,13 +54,19 @@ func listSpecCovidHandler(cliCtx context.CLIContext, storeName string) http.Hand
 		}
 		address := req.Address
 
-		var out []types.Quarantine
+		var out []types.Covid
 		cliCtx.Codec.MustUnmarshalJSON(res, &out)
 
-		var filteredOut []types.Quarantine
+		var filteredOut []types.Covid
 			for _, covid := range out {
-				if isin(covid.Creator.String(),address) {
-					filteredOut = append(filteredOut, covid)
+				var pubkey []string
+				pubkey = covid.PubKey
+				if covid.Status == "APPROVED" {
+					for _, key := range pubkey {
+						if isin(key, address){
+							filteredOut = append(filteredOut, covid)
+						}
+					}
 				}
 			}
 		// response = cliCtx.Codec.MusMarshalJSON(filteredOut)

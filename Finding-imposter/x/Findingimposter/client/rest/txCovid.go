@@ -39,7 +39,7 @@ func createCovidHandler(cliCtx context.CLIContext) http.HandlerFunc {
 
 		createdAt := time.Now().Format("02/01/2006 15:04")
 
-		msg := types.NewMsgCreateCovid(creator,  req.CovidID,  createdAt,  req.Status, req.PubKey, )
+		msg := types.NewMsgCreateCovid(creator,  req.CovidID,  createdAt,  req.Status, req.PubKey)
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
 }
