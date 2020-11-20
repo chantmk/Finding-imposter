@@ -10,32 +10,8 @@ func (k Keeper) CreateCovid(ctx sdk.Context, covid types.Covid) {
 	store := ctx.KVStore(k.storeKey)
 	key := []byte(types.CovidPrefix + covid.ID)
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(covid)
-	checkDoctor := isDoctor(ctx, k, covid.Creator.String())
-	if covid.Status == "APPROVED" {
-		if checkDoctor {
-			createQuarantineByCovid(ctx, k, covid)
-			store.Set(key, value)
-		}
-	} else if covid.Status == "REJECTED" {
-		if checkDoctor {
-			store.Set(key, value)
-		}
-	} else if covid.Status == "PENDING" {
-		store.Set(key, value)
-	}
-}
-
-func isDoctor(ctx sdk.Context, k Keeper, user string) (bool){
-	store := ctx.KVStore(k.storeKey)
-	iterator := sdk.KVStorePrefixIterator(store, []byte(types.DoctorPrefix))
-	for ; iterator.Valid(); iterator.Next() {
-		var doctor types.Doctor
-		k.cdc.MustUnmarshalBinaryLengthPrefixed(store.Get(iterator.Key()), &doctor)
-		if doctor.IsDoctor == "True" && doctor.Address == user {
-			return true
-		} 
-	}
-	return false
+	store.Set(key, value)
+	createQuarantineByCovid(ctx, k, covid)
 }
 
 func createQuarantineByCovid(ctx sdk.Context, k Keeper, covid types.Covid) {
@@ -71,7 +47,14 @@ func createQuarantineByCovid(ctx sdk.Context, k Keeper, covid types.Covid) {
 				}
 			}
 			//create quarantine
-
+			var quarantine = types.Quarantine{
+				Creator: covid.Creator,
+				ID:      covid.CovidID,
+				UserAddress: log.Creator,
+				StartAt: covid.CreatedAt,
+				EndAt: covid.CreatedAt.AddDate(0,0,14),
+			}
+			k.CreateQuarantine(ctx, quarantine)
 		} 
 	}
 }
