@@ -13,7 +13,7 @@
             <div style="flex:1" class="flex-center">{{ log.checkInAt }}</div>
             <div style="flex:1" class="flex-center" v-if="!!log.checkOutAt">{{ log.checkOutAt }}</div>
             <div class="flex-center" style="flex:1;:center" v-else>
-                <div class="check-out-button" @click="() => checkout(log.id)">
+                <div class="check-out-button" @click="() => checkout(log.logID)">
                     +
                 </div>
             </div>
