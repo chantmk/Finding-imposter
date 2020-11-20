@@ -16,6 +16,7 @@ export default {
   mounted() {
     if(!this.$store.store.state.account.address)
       this.$router.push('/'); 
+    this.$store.store.dispatch("init")
   },
   methods: {
     logout() {

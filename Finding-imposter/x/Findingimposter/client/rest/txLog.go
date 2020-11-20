@@ -36,8 +36,8 @@ func createLogHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
-		currentTime := time.Now().Format("2006-01-02 15:04:05")
-		msg := types.NewMsgCreateLog(creator,  req.LogID,  req.PlaceID,  currentTime,  req.Action, )
+		createdAt := time.Now().Format("02/01/2006 15:04")
+		msg := types.NewMsgCreateLog(creator,  req.LogID,  req.PlaceID,  createdAt,  req.Action, )
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
 }

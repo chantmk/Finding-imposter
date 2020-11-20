@@ -150,9 +150,27 @@ export default new Vuex.Store({
       
       // create new covid
       const newCovid = { status: "PENDING",  reportAt: "13/6/2020 18:30" }
-      const body = state.data.covid;
-      body.push(newCovid)
-      commit("dataSet", { type: "covid", body });
+      const newData = state.data.covid;
+      newData.push(newCovid)
+      commit("dataSet", { type: "covid", body: newData });
+
+      const covidID = random()
+      const pubKey = state.data[index].pubKey
+      const creator = state.client
+      const body = {
+        base_req: {
+          chain_id: "Findingimposter",
+          from: creator.senderAddress
+        },
+        creator: creator.senderAddress,
+        covidID,
+        status: "PENDING",
+        pubKey,
+      }
+      const { data: result } = await axios.post(`${API}/Findingimposter/covid`, body);
+      const { msg, fee, memo } = result.value;
+      await state.client.signAndPost(msg, fee, memo);
+
     },
   },
 });

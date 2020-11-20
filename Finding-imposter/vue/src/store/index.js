@@ -37,48 +37,39 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async init({ dispatch, state }) {
-      // await dispatch("chainIdFetch");
-      // get all logs
-      // dispatch("getData");
+    async init({ dispatch, commit, state }) {
+      await dispatch("getData")
     },
     // async chainIdFetch({ commit }) {
     //   const node_info = (await axios.get(`${API}/node_info`)).data.node_info;
     //   commit("chainIdSet", { chain_id: node_info.network });
     // },
     async getData({ state, commit }) {
-      // const { chain_id } = state;
-      // const url = `${API}/${chain_id}/${type}`;
-      // const body = (await axios.get(url)).data.result;
-      const data = [
-        {
-          id: "t17ExvqLpLLzgSoM",
-          createdAt: "13/6/2020 18:30",
-        },
-        {
-          id: "t17ExvqLpLLzgSoM",
-          createdAt: "13/6/2020 18:30",
-        }
-      ]
-      commit("dataSet", { data });
+      const { data } = await axios.get(`${API}/Findingimposter/pendingCovid`)
+      commit("dataSet", { data: data.result })
     },
-    removeCovidId({ state, commit }, { id }) {
+    removeCovidId({ state, commit }, { index }) {
       const data = state.data;
-      const index = data.findIndex(i => i.id === id)
       data.splice(index, 1);
       commit("dataSet", { data });
     },
-    async action({ state, dispatch }, { status, id }) {
-      // TODO
-      // const { chain_id } = state;
-      // const creator = state.client.senderAddress;
-      // const base_req = { chain_id, from: creator };
-      // const req = { base_req, creator, ...body };
-      // const { data } = await axios.post(`${API}/${chain_id}/${type}`, req);
-      // const { msg, fee, memo } = data.value;
-      // return await state.client.signAndPost(msg, fee, memo);
-
-      dispatch("removeCovidId", { id })
+    async action({ state, dispatch }, { status, id, index }) {
+      const pubKey = state.data[index].pubKey
+      dispatch("removeCovidId", { index })
+      const creator = state.client
+      const body = {
+        base_req: {
+          chain_id: "Findingimposter",
+          from: creator.senderAddress
+        },
+        creator: creator.senderAddress,
+        covidID: id,
+        status,
+        pubKey,
+      }
+      const { data: result } = await axios.post(`${API}/Findingimposter/covid`, body);
+      const { msg, fee, memo } = result.value;
+      await state.client.signAndPost(msg, fee, memo);
     },
     async accountSignIn({ commit }, { mnemonic }) {
       console.log('fsdfsfsß')
