@@ -2,7 +2,7 @@ package rest
 
 import (
 	"net/http"
-
+	"time"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/types/rest"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
@@ -39,7 +39,7 @@ func createQuarantineHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
-		msg := types.NewMsgCreateQuarantine(creator, userAddress,  req.StartAt,  req.EndAt, )
+		msg := types.NewMsgCreateQuarantine(creator, userAddress,  time.Now(),  time.Now().AddDate(0,0,14) )
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
 }

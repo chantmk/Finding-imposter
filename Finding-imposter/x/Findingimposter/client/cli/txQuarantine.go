@@ -2,7 +2,7 @@ package cli
 
 import (
 	"bufio"
-  
+	"time"
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client/context"
@@ -23,8 +23,8 @@ func GetCmdCreateQuarantine(cdc *codec.Codec) *cobra.Command {
 			if err_addr != nil {
 				return err_addr
 			}
-			argsStartAt := string(args[0])
-			argsEndAt := string(args[1])
+			argsStartAt := time.Now()
+			argsEndAt := time.Now().AddDate(0, 0, 14)
 
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())

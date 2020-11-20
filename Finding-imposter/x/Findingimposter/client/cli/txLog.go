@@ -2,7 +2,7 @@ package cli
 
 import (
 	"bufio"
-  
+	"time"
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client/context"
@@ -21,7 +21,7 @@ func GetCmdCreateLog(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
       argsLogID := string(args[0])
       argsPlaceID := string(args[1])
-      argsCreatedAt := string(args[2])
+      argsCreatedAt := time.Now()
       argsAction := string(args[3])
       
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
