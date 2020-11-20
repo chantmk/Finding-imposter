@@ -28,6 +28,7 @@ func listCovid(ctx sdk.Context, k Keeper) ([]byte, error) {
 
 func listPendingCovid(ctx sdk.Context, k Keeper)([]byte, error) {
 	var covidList []types.Covid
+	PENDING := "PENDING"
 	// var visitedCovidID map[string]bool
 	visitedCovidID := make(map[string]bool)
 	store := ctx.KVStore(k.storeKey)
@@ -35,9 +36,9 @@ func listPendingCovid(ctx sdk.Context, k Keeper)([]byte, error) {
 	for ; iterator.Valid(); iterator.Next() {
 		var covid types.Covid
 		k.cdc.MustUnmarshalBinaryLengthPrefixed(store.Get(iterator.Key()), &covid)
-		if covid.Status != "pending" {
+		if covid.Status != PENDING {
 			visitedCovidID[covid.CovidID] = true
-		} else if (covid.Status == "pending" && !visitedCovidID[covid.CovidID]){
+		} else if (covid.Status == PENDING && !visitedCovidID[covid.CovidID]){
 			covidList = append(covidList, covid)
 		}
 	}	

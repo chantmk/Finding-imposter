@@ -65,7 +65,10 @@ export default new Vuex.Store({
   actions: {
     async init({ commit, dispatch }) {
       const _secrets = localStorage.getItem(LOCAL_STORAGE_LOG_KEY);
-      const secrets = JSON.parse(_secrets)
+      console.log(_secrets)
+      let secrets
+      if(_secrets) secrets = JSON.parse(_secrets)
+      else secrets = []
       commit("secretsSet", { secrets });
 
       // get logs
@@ -77,28 +80,48 @@ export default new Vuex.Store({
         commit("dataSet", { type, body });
       });
     },
-    checkout({ commit, state }, { logId }) {
-      const _secret = state.secrets.filter(i => i.logId === logId)
-      const { secret } = _secret[0]
-
-      // create checkout / connect to API
-      const checkoutAt = "13/6/2020 18:30"
-
-      const body = state.data.log;
-      const index = body.findIndex(i => i.id === logId)
-      body[index].checkOutAt = checkoutAt
-      commit("dataSet", { type: "log", body });
+    async createLog({}, { client, body }) {
+      const { data: result } = await axios.post(`${API}/Findingimposter/log`, body);
+      const { msg, fee, memo } = result.value;
+      // await client.signAndPost(msg, fee, memo);
+      const { ID, placeID, createdAt } = msg[0].value
+      return { id: ID, placeId: placeID, createdAt }
     },
-    async checkin({ commit, state }, { placeId }) {
+    async checkout({ dispatch, commit, state }, { logId }) {
+      console.log(state.secrets)
+      const secret = "churn scrub shrimp course render frost length dinosaur canyon search fog relax belt give drive trouble shove easily"
       try {
-        console.log(placeId)
+        // create new wallet
+        const wallet = await Secp256k1Wallet.fromMnemonic(secret, makeCosmoshubPath(0), ADDRESS_PREFIX);
+        const { secret: { data }, address } = wallet
+        const client = new SigningCosmosClient(API, address, wallet);
+        console.log(client, wallet)
+        const creator = client.senderAddress
+
+        const body = {
+          base_req: { chain_id: CHAIN_ID, from: creator },
+          creator,
+          logID: logId,
+          action: "CHECKOUT"
+        }
+        const { createdAt } = await dispatch("createLog", { client, body });
+        const _log = state.data.log;
+        const index = _log.map(i => (i.id)).indexOf(logId)
+        _log[index].checkOutAt = createdAt
+        commit("dataSet", { type: "log", body: _log });
+      } catch(error) {
+        console.log(error)
+      }
+
+    },
+    async checkin({ dispatch, commit, state }, { placeId }) {
+      try {
         // create new wallet
         const wallet = await Secp256k1Wallet.generate(18)
         const { secret: { data }, address } = wallet
         const client = new SigningCosmosClient(API, address, wallet);
         const creator = client.senderAddress
-        console.log(client)
-
+        console.log(client, wallet)
         const logID = random()
         const body = {
           base_req: { chain_id: CHAIN_ID, from: creator },
@@ -107,15 +130,15 @@ export default new Vuex.Store({
           placeID: placeId,
           action: "CHECKIN"
         }
-        const { data: result } = await axios.post(`${API}/Findingimposter/log`, { body });
-        const { ID, placeID, createdAt: checkInAt } = result.value.msg[0].value
-        const newLog = { id: ID, name: placeID, placeId: placeID, createdAt: checkInAt, checkOutAt: null }
+        const { id, createdAt } = await dispatch("createLog", { client, body });
+
+        const newLog = { id, name: placeId, placeId, checkInAt: createdAt, checkOutAt: null }
         const _log = state.data.log;
         _log.push(newLog)
-        commit("dataSet", { type: "log", body });
+        commit("dataSet", { type: "log", body: _log });
 
         // store secret in local storage
-        commit("secretsUpdate", { secret: data, createdAt: checkInAt}); // do we need to store log id
+        commit("secretsUpdate", { secret: data, createdAt, logId: logID });
       } catch(error) {
         console.log(error)
       }
@@ -127,9 +150,27 @@ export default new Vuex.Store({
       
       // create new covid
       const newCovid = { status: "PENDING",  reportAt: "13/6/2020 18:30" }
-      const body = state.data.covid;
-      body.push(newCovid)
-      commit("dataSet", { type: "covid", body });
+      const newData = state.data.covid;
+      newData.push(newCovid)
+      commit("dataSet", { type: "covid", body: newData });
+
+      const covidID = random()
+      const pubKey = state.data[index].pubKey
+      const creator = state.client
+      const body = {
+        base_req: {
+          chain_id: "Findingimposter",
+          from: creator.senderAddress
+        },
+        creator: creator.senderAddress,
+        covidID,
+        status: "PENDING",
+        pubKey,
+      }
+      const { data: result } = await axios.post(`${API}/Findingimposter/covid`, body);
+      const { msg, fee, memo } = result.value;
+      await state.client.signAndPost(msg, fee, memo);
+
     },
   },
 });

@@ -7,14 +7,14 @@
       <div class="table-body">
         <div class="table-body-item" v-for="(log, index) in logs" :key="index">
             <div style="flex:2">
-              <div>{{ log.id }}</div>
+              <div>{{ log.covidID }}</div>
               <div style="font-size:12px;color:#898989;">{{ log.createdAt }}</div>
             </div>
             <div class="flex-center" >
-                <div class="action-button red" @click="reject">
+                <div class="action-button red" @click="() => reject({ id: log.covidID, index })">
                     <i class="fa fa-times"></i>
                 </div>
-                <div class="action-button green" @click="approve">
+                <div class="action-button green" @click="() => approve({ id: log.covidID, index })">
                     <i class="fa fa-check"></i>
                 </div>
             </div>
@@ -41,6 +41,12 @@ export default {
   },
   async mounted() {
     this.$store.store.dispatch("getData")
+    try {
+      const { data, status } = await axios.get(`http://localhost:3000/doctor?id=${this.address}`)
+      this.requested = data.sent
+    } catch (error) {
+      console.log(error)
+    }
   },
   computed: {
     logs() {
@@ -51,16 +57,16 @@ export default {
     }
   },
   methods: {
-    approve(id) {
-      this.$store.store.dispatch("action", { status: "APPROVED", id })
+    approve({ id, index }) {
+      this.$store.store.dispatch("action", { status: "APPROVED", id, index })
     },
-    reject(id) {
-      this.$store.store.dispatch("action", { status: "REJECTED", id })
+    reject({ id, index }) {
+      this.$store.store.dispatch("action", { status: "REJECTED", id, index })
     },
     async request() {
       try {
         const { data, status } = await axios.post(`http://localhost:3000/doctor`, {
-          address: 'hiii'
+          address: this.address
         })
         if(status === 200) {
           this.requested = true
