@@ -13,7 +13,7 @@ func (k Keeper) CreateCovid(ctx sdk.Context, covid types.Covid) {
 	checkDoctor := isDoctor(ctx, k, covid.Creator.String())
 	if covid.Status == "APPROVE" {
 		if checkDoctor {
-			createQC(ctx, k, covid)
+			createQuarantineByCovid(ctx, k, covid)
 			store.Set(key, value)
 		}
 	} else if covid.Status == "REJECTED" {
@@ -38,7 +38,7 @@ func isDoctor(ctx sdk.Context, k Keeper, user string) (bool){
 	return false
 }
 
-func createQC(ctx sdk.Context, k Keeper, covid types.Covid) {
+func createQuarantineByCovid(ctx sdk.Context, k Keeper, covid types.Covid) {
 	pub := covid.PubKey
 	store := ctx.KVStore(k.storeKey)
 
