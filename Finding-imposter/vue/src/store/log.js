@@ -158,7 +158,7 @@ export default new Vuex.Store({
       const { ID, placeID, createdAt } = msg[0].value
       return { id: ID, placeId: placeID, createdAt }
     },
-    async getClient({}, { isNew, secret = "address dash cotton sibling female finish promote salmon that cereal shiver pledge apart assault garage equal grunt crop brave club potato chunk viable trumpet" }) {
+    async getClient({}, { isNew, secret = "three gold day cloth loan brush riot steel model patch balance drip toe can jacket casual upset submit protect glove piano share when ginger" }) {
       let client;
       let _secret;
       if(false && isNew) {
@@ -265,7 +265,6 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error)
       }
-
     },
   },
 });
