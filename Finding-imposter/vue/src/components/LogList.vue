@@ -51,7 +51,7 @@ export default {
   async mounted() {
     const { id } = this.$route.query
     try {
-      const { data } = await axios.get(`http://localhost:3000/place`)
+      const { data } = await axios.get(`https://web-swacp72spq-as.a.run.app/place`)
       data.forEach(i => {
         this.place[i._id] = i.name
       });

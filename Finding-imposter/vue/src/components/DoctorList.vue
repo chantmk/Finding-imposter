@@ -21,6 +21,7 @@
         </div>
       </div>
       <div class="divider"></div>
+      <div class="error" v-if="error">{{ error }}</div>
       <div class="request">
         <button class="request-button" @click="request" v-if="!isDoctor" :disabled="requested">
           {{ requested? "Request is sent" : "Request to be a doctor" }}
@@ -38,12 +39,13 @@ export default {
     return {
       isDoctor: false,
       requested: false,
+      error: null,
     }
   },
   async mounted() {
     this.$store.store.dispatch("getData")
     try {
-      const { data, status } = await axios.get(`http://localhost:3000/doctor?id=${this.address}`)
+      const { data, status } = await axios.get(`https://web-swacp72spq-as.a.run.app/doctor?id=${this.address}`)
       this.requested = data.sent
     } catch (error) {
       console.log(error)
@@ -58,18 +60,30 @@ export default {
     }
   },
   methods: {
-    approve({ id, index }) {
-      this.$store.store.dispatch("action", { status: "APPROVED", id, index })
+    async approve({ id, index }) {
+      try {
+        await this.$store.store.dispatch("action", { status: "APPROVED", id, index })
+        this.error = null
+      } catch (err) {
+        const { error } = err.response.data
+        this.error = error
+      }
     },
-    reject({ id, index }) {
-      this.$store.store.dispatch("action", { status: "REJECTED", id, index })
+    async reject({ id, index }) {
+       try {
+        await this.$store.store.dispatch("action", { status: "REJECTED", id, index })
+        this.error = null
+      } catch (err) {
+        const { error } = err.response.data
+        this.error = error
+      }
     },
     formatter(s) {
       return new moment(s).format('DD/MM/yyyy hh:mm');
     },
     async request() {
       try {
-        const { data, status } = await axios.post(`http://localhost:3000/doctor`, {
+        const { data, status } = await axios.post(`https://web-swacp72spq-as.a.run.app/doctor`, {
           address: this.address
         })
         if(status === 200) {
@@ -87,6 +101,11 @@ export default {
 <style scoped>
 .log-list {
 
+}
+.error {
+  font-size: 14px;
+  color: #FF5100;
+  margin-bottom: 16px;
 }
 .header {
     font-size: 24px;
