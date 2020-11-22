@@ -27,11 +27,11 @@ Blockchain class's project
 
 ---
 ## Project structure
-|||
-|-|-|
-|Front end| Vue.JS
-|Back end| 
-|Blockchain| Tendermint
+||||
+|-|-|-|
+|- [x] |Front end| Vue.JS
+|- [x] |Back end| 
+|- [x] |Blockchain| Tendermint
 
 
 ---
@@ -39,6 +39,3 @@ Blockchain class's project
 1. [Jirapat Khupanit 6030087221]()(https://github.com/focusjk)
 2. [Thammakorn Kobkuachaiyapong 6030272021](https://github.com/chantmk)
 3. [Budsakorn Khosagrid 6031035821](https://github.com/mingokl02135)
-
-- [ ] abc
-- [x] hijk
