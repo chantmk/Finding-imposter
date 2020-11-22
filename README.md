@@ -1,7 +1,19 @@
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/chantmk/Finding-imposter)
 
 # Finding-imposter
-Blockchain class's project
+ class's project of 2110595 ADV TOP COMP V (Blockchain) 
+
+The project is the COVID-19 pandemic logging system using blockchain to collect information of people travelling through various building which registered to our system.
+
+The system include
+1. Check-in and Check-out from the building.
+2. Assign and validation who is affected by COVID-19 by trusted third party verified Doctors.
+3. Calculate and report who has to isolate as we call it "Quarantine".
+
+
+ This project using 
+ - [Tendermint](https://tendermint.com/) as Byzentine Fault tolerant consensus protocol
+ - [Cosmos SDK](https://docs.cosmos.network/)  and [Starport](https://github.com/tendermint/starport) for development
 
 ---
 ## How to run our project?
