@@ -1,4 +1,3 @@
 tasks:
-  - prebuild: npm install -g @tendermint/starport@0.0.10 --save
   - name: Start starport
-    command: cd Finding-imposter && starport serve --verbose
+    command: npm install -g @tendermint/starport@0.0.10 --save && cd Finding-imposter && starport serve --verbose
