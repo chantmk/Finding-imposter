@@ -11,7 +11,8 @@ const getStatus = (a, b) => {
   if(b == "PENDING") return a;
   return a;
 }
-const API = "http://localhost:1317"
+const API = "https://1317-f4e5278e-f118-47aa-aa60-901ab6359533.ws-us02.gitpod.io";
+// const API = "http://localhost:1317"
 const CHAIN_ID = "Findingimposter"
 const ADDRESS_PREFIX = "cosmos"
 const LOCAL_STORAGE_LOG_KEY = "finding-imposter-log-secret"
@@ -158,7 +159,7 @@ export default new Vuex.Store({
       const { ID, placeID, createdAt } = msg[0].value
       return { id: ID, placeId: placeID, createdAt }
     },
-    async getClient({}, { isNew, secret = "three gold day cloth loan brush riot steel model patch balance drip toe can jacket casual upset submit protect glove piano share when ginger" }) {
+    async getClient({}, { isNew, secret = "pluck much casual country tape praise conduct real mask pipe hospital area where sleep brown clip immune acoustic hospital fringe bundle power caution chalk" }) {
       let client;
       let _secret;
       if(false && isNew) {

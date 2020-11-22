@@ -6,7 +6,8 @@ import { Secp256k1Wallet, SigningCosmosClient, makeCosmoshubPath } from "@cosmjs
 
 Vue.use(Vuex);
 
-const API = "http://localhost:1317";
+const API = "https://1317-f4e5278e-f118-47aa-aa60-901ab6359533.ws-us02.gitpod.io";
+// const API = "http://localhost:1317";
 const ADDRESS_PREFIX = "cosmos"
 
 export default new Vuex.Store({
