@@ -1,5 +1,8 @@
 tasks:
-  - before: npm install -g @tendermint/starport@0.0.10 --save
-  - init: npm install -g @tendermint/starport@0.0.10 --save
-  - command: npm install -g @tendermint/starport@0.0.10 --save
-  - command: starport serve --verbose
+  - prebuild: npm install -g @tendermint/starport@0.0.10 --save
+  - name: Install required dependency
+    command: npm install -g @tendermint/starport@0.0.10 --save
+  - name: Start starport
+    command: starport serve --verbose
+
+
