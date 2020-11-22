@@ -27,15 +27,17 @@ Blockchain class's project
 
 ---
 ## Project structure
-||||
-|-|-|-|
-|- [x] |Front end| Vue.JS
-|- [x] |Back end| 
-|- [x] |Blockchain| Tendermint
+|||
+|-|-|
+|Front end| Vue.JS
+|Back end| 
+|Blockchain| Tendermint - Starport
 
+[more](Description.md)
 
 ---
 # Members
-1. [Jirapat Khupanit 6030087221]()(https://github.com/focusjk)
+1. [Jirapat Khupanit 6030087221](https://github.com/focusjk)
 2. [Thammakorn Kobkuachaiyapong 6030272021](https://github.com/chantmk)
 3. [Budsakorn Khosagrid 6031035821](https://github.com/mingokl02135)
+
