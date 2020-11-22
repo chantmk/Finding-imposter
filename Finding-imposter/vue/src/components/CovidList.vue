@@ -113,4 +113,7 @@ input {
   border: none;
   width: 72px;
 }
+.report-button:disabled {
+  background-color: #E7E7E7;
+}
 </style>

@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Index from "../views/Index.vue";
 import Main from "../views/Main.vue";
 import Doctor from "../views/Doctor.vue";
+import Admin from "../views/Admin.vue";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,10 @@ const routes = [
   {
     path: "/doctor",
     component: Doctor,
+  },
+  {
+    path: "/admin",
+    component: Admin,
   },
 ];
 

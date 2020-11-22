@@ -13,13 +13,8 @@
 <script>
 export default {
   mounted() {
-    if(this.$store.state.account && this.$store.state.account.id)
+    if(this.$store.state && this.$store.state.account && this.$store.state.account.id)
       this.$router.push('/doctor'); 
-  },
-  methods: {
-    logout() {
-      console.log('hi')
-    }
   },
 };
 </script>

@@ -78,9 +78,9 @@ export default new Vuex.Store({
       commit("covidSecretsSet", covidSecrets);
 
       // get logs
-      await dispatch("getLog");
-      await dispatch("getCovid");
-      await dispatch("getQuarantine");
+      dispatch("getLog");
+      dispatch("getCovid");
+      dispatch("getQuarantine");
     },
     async getLog({ dispatch, commit, state }){
       const { client } = await dispatch("getClient", { isNew: true })
@@ -91,30 +91,30 @@ export default new Vuex.Store({
         address,
       }
       const { data: { result } } = await axios.post(`${API}/Findingimposter/log/list`, body);
-      const log = {}
-      result.forEach(i => {
-        if(!(i.logID in log)) log[i.logID] = {}
+      let logs = {};
+      (result? result:[]).forEach(i => {
+        if(!(i.logID in logs)) logs[i.logID] = { logID: i.logID }
         if(i.action == "CHECKOUT") 
-          log[i.logID] = { 
-            ...log[i.logID], 
+          logs[i.logID] = { 
+            ...logs[i.logID], 
             checkOutAt: i.createdAt,
             checkOutId: i.id,
           }
         else if(i.action == "CHECKIN") 
-          log[i.logID] = { 
-            ...log[i.logID], 
-            logID: i.logID,
+          logs[i.logID] = { 
+            ...logs[i.logID],
             checkInAt: i.createdAt,
             id: i.id,
             placeID: i.placeID,
             creator: i.creator
           }
       })
-      commit("dataSet", { type: "log", body: Object.values(log) });
+      commit("dataSet", { type: "log", body: Object.values(logs) });
     },
     async getCovid({ dispatch, commit, state }){
       const { data: { result } } = await axios.get(`${API}/Findingimposter/covid`);
       // filter
+      console.log('getCovid',result)
       const ownCovidLog = (result? result:[]).filter(i => i.covidID in state.covidSecrets);
       const covidLog = {};
       ownCovidLog.forEach(i => {
@@ -158,7 +158,7 @@ export default new Vuex.Store({
       const { ID, placeID, createdAt } = msg[0].value
       return { id: ID, placeId: placeID, createdAt }
     },
-    async getClient({}, { isNew, secret = "pet symptom fitness remain youth boat skull settle cricket move airport pear keen lottery eager lumber sheriff trumpet cricket snow tourist all gossip coil" }) {
+    async getClient({}, { isNew, secret = "three gold day cloth loan brush riot steel model patch balance drip toe can jacket casual upset submit protect glove piano share when ginger" }) {
       let client;
       let _secret;
       if(false && isNew) {
@@ -249,10 +249,12 @@ export default new Vuex.Store({
         }
         const { data: result } = await axios.post(`${API}/Findingimposter/covid`, body);
         const { msg, fee, memo } = result.value;
-        await client.signAndPost(msg, fee, memo);
+        const a = await client.signAndPost(msg, fee, memo);
 
         // update covid
-        const createdAt = "13/6/2020 18:30"
+        const { createdAt } = msg[0].value
+        console.log('report', createdAt,a)
+        
         const newCovid = { covidID, status: "PENDING",  reportAt: createdAt }
         const newData = state.data.covid;
         newData.push(newCovid)
@@ -263,7 +265,6 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error)
       }
-
     },
   },
 });

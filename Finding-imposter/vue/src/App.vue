@@ -9,6 +9,7 @@
 
 body {
   margin: 0;
+  font-size: 14px;
   font-family: "Inter", "Helvetica", sans-serif;
 }
 </style>

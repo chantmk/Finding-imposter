@@ -12,10 +12,11 @@
             <div style="flex:2">{{ place[log.placeID] }}</div>
             <div style="flex:1" class="flex-center">{{ formatter(log.checkInAt) }}</div>
             <div style="flex:1" class="flex-center" v-if="!!log.checkOutAt">{{ formatter(log.checkOutAt) }}</div>
-            <div class="flex-center" style="flex:1;:center" v-else>
-                <div class="check-out-button" @click="() => checkout(log.logID)">
-                    +
-                </div>
+            <div class="flex-center" style="flex:1;" v-else>
+                <button class="check-out-button" @click="() => checkout(log.logID)" :disabled="outLoading">
+                  <i class="fa fa-spinner fa-spin" v-if="outLoading" style="font-size:14px"></i>
+                  <div v-else>+</div>  
+                </button>
             </div>
         </div>
       </div>
@@ -45,13 +46,14 @@ export default {
       placeName: null,
       disabled: true,
       loading: false,
+      outLoading: false,
       place: {},
     };
   },
   async mounted() {
     const { id } = this.$route.query
     try {
-      const { data } = await axios.get(`http://localhost:3000/place`)
+      const { data } = await axios.get(`https://web-swacp72spq-as.a.run.app/place`)
       data.forEach(i => {
         this.place[i._id] = i.name
       });
@@ -75,8 +77,10 @@ export default {
     },
   },
   methods: {
-    checkout(logId) {
-      this.$store.log.dispatch("checkout", { logId })
+    async checkout(logId) {
+      this.outLoading = true;
+      await this.$store.log.dispatch("checkout", { logId })
+      this.outLoading = false;
     },
     formatter(s) {
       return new moment(s).format('DD/MM/yyyy hh:mm');
@@ -96,15 +100,10 @@ export default {
 
 
 <style scoped>
-.log-list {
-  
-}
 .header {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 8px;
-}
-.table {
 }
 .table-header {
     display: flex;
@@ -133,14 +132,19 @@ export default {
     margin-bottom: 8px;
 }
 .check-out-button {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     border-radius: 100%;
     background-color: #7EC03B;
     color: #FFFFFF;
     text-align: center;
     font-size: 20px;
     cursor: pointer;
+    border: none;
+    padding: 0;
+}
+.check-out-button:disabled {
+  background-color: #E7E7E7;
 }
 .check-in {
     display: flex;

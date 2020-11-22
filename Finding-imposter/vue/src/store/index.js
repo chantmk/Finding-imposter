@@ -54,8 +54,6 @@ export default new Vuex.Store({
       commit("dataSet", { data });
     },
     async action({ state, dispatch }, { status, id, index }) {
-      const pubKey = state.data[index].pubKey
-      dispatch("removeCovidId", { index })
       const creator = state.client
       const body = {
         base_req: {
@@ -70,6 +68,8 @@ export default new Vuex.Store({
       const { data: result } = await axios.post(`${API}/Findingimposter/covid`, body);
       const { msg, fee, memo } = result.value;
       await state.client.signAndPost(msg, fee, memo);
+      const pubKey = state.data[index].pubKey
+      dispatch("removeCovidId", { index })
     },
     async accountSignIn({ commit }, { mnemonic }) {
       console.log('fsdfsfsß')

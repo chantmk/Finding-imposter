@@ -5,6 +5,9 @@
         <div style="flex:2">Report</div>
       </div>
       <div class="table-body">
+        <div class="loading" v-if="loading">
+          <i class="fa fa-spinner fa-spin loading-icon"></i>
+        </div>
         <div class="table-body-item" v-for="(log, index) in logs" :key="index">
             <div style="flex:2">
               <div>{{ log.covidID }}</div>
@@ -21,6 +24,7 @@
         </div>
       </div>
       <div class="divider"></div>
+      <div class="error" v-if="error">{{ error }}</div>
       <div class="request">
         <button class="request-button" @click="request" v-if="!isDoctor" :disabled="requested">
           {{ requested? "Request is sent" : "Request to be a doctor" }}
@@ -38,12 +42,14 @@ export default {
     return {
       isDoctor: false,
       requested: false,
+      error: null,
+      loading: false,
     }
   },
   async mounted() {
     this.$store.store.dispatch("getData")
     try {
-      const { data, status } = await axios.get(`http://localhost:3000/doctor?id=${this.address}`)
+      const { data, status } = await axios.get(`https://web-swacp72spq-as.a.run.app/doctor?id=${this.address}`)
       this.requested = data.sent
     } catch (error) {
       console.log(error)
@@ -58,18 +64,34 @@ export default {
     }
   },
   methods: {
-    approve({ id, index }) {
-      this.$store.store.dispatch("action", { status: "APPROVED", id, index })
+    async approve({ id, index }) {
+      this.loading = true;
+      try {
+        await this.$store.store.dispatch("action", { status: "APPROVED", id, index })
+        this.error = null
+      } catch (err) {
+        const { error } = err.response.data
+        this.error = error
+      }
+      this.loading = false;
     },
-    reject({ id, index }) {
-      this.$store.store.dispatch("action", { status: "REJECTED", id, index })
+    async reject({ id, index }) {
+      this.loading = true;
+       try {
+        await this.$store.store.dispatch("action", { status: "REJECTED", id, index })
+        this.error = null
+      } catch (err) {
+        const { error } = err.response.data
+        this.error = error
+      }
+      this.loading = false;
     },
     formatter(s) {
       return new moment(s).format('DD/MM/yyyy hh:mm');
     },
     async request() {
       try {
-        const { data, status } = await axios.post(`http://localhost:3000/doctor`, {
+        const { data, status } = await axios.post(`https://web-swacp72spq-as.a.run.app/doctor`, {
           address: this.address
         })
         if(status === 200) {
@@ -85,16 +107,15 @@ export default {
 
 
 <style scoped>
-.log-list {
-
+.error {
+  font-size: 14px;
+  color: #FF5100;
+  margin-bottom: 16px;
 }
 .header {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 8px;
-}
-.table {
-    
 }
 .table-header {
     display: flex;
@@ -104,7 +125,7 @@ export default {
     /* font-weight: bold; */
 }
 .table-body {
-    
+  position: relative;
 }
 .table-body-item {
     display: flex;
@@ -159,5 +180,19 @@ export default {
   border: none;
   outline: none;
 }
-
+.loading {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,0.7);
+  text-align: center;
+  justify-content: center;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.loading-icon {
+  font-size: 20px;
+}
 </style>
