@@ -1,5 +1,4 @@
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/chantmk/Finding-imposter)
-
 # Finding-imposter
  class's project of 2110595 ADV TOP COMP V (Blockchain) 
 
@@ -18,9 +17,10 @@ The system include
 ---
 ## How to run our project?
 ###  **Option 1: gitpod**
-> 1. Click ![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod) tag at the top of this [README.md](README.md) to launch gitpod workspace and start starport application via gitpod or click the button below and enjoy.
-> 2.
-> 3.
+> 1. Click [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/chantmk/Finding-imposter) tag at the top of this [README.md](README.md) to launch gitpod workspace and start starport application via gitpod or click the button below.
+> 2. Click Open Ports tab at the console.
+> 3. Open Browser of port 8080 to connect to frontend.
+> 4. Enjoy!
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/<your-org>/<your-project>)
 
@@ -39,13 +39,14 @@ The system include
 
 ---
 ## Project structure
-|||
-|-|-|
-|Front end| Vue.JS
-|Back end| 
-|Blockchain| Tendermint - Starport
+|Topic|Framework|Description|
+|-|-|-|
+|Front end| Vue.JS | User interface 
+|Back end| Golang | Application logic
+|Database||Data mapping
+|Blockchain| Tendermint - Starport| BFT consensus protocol
 
-[more](Description.md)
+[...more](Description.md)
 
 ---
 # Members
