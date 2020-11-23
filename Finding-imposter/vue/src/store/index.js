@@ -72,7 +72,6 @@ export default new Vuex.Store({
       dispatch("removeCovidId", { index })
     },
     async accountSignIn({ commit }, { mnemonic }) {
-      console.log('fsdfsfsß')
       return new Promise(async (resolve, reject) => {
         const wallet = await Secp256k1Wallet.fromMnemonic(mnemonic, makeCosmoshubPath(0), ADDRESS_PREFIX);
         const [{ address }] = await wallet.getAccounts();
@@ -81,7 +80,6 @@ export default new Vuex.Store({
         if (acc.result.value.address === address) {
           const account = acc.result.value;
           const client = new SigningCosmosClient(API, address, wallet);
-          console.log(client, wallet, acc)
           commit("accountUpdate", { account });
           commit("clientUpdate", { client });
           resolve(account);

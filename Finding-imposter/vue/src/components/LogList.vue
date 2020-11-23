@@ -47,16 +47,14 @@ export default {
       disabled: true,
       loading: false,
       outLoading: false,
-      place: {},
+      placeList: [],
     };
   },
   async mounted() {
     const { id } = this.$route.query
     try {
       const { data } = await axios.get(`https://web-swacp72spq-as.a.run.app/place`)
-      data.forEach(i => {
-        this.place[i._id] = i.name
-      });
+      this.placeList = data;
       if(id && id in this.place) {
         this.placeId = id
         this.placeName = this.place[id]
@@ -74,6 +72,13 @@ export default {
         return B - A;
       })
       return logs
+    },
+    place() {
+      const temp = {}
+      this.placeList.forEach(i => {
+        temp[i._id] = i.name
+      });
+      return temp
     },
   },
   methods: {

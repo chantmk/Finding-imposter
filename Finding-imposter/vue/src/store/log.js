@@ -2,33 +2,19 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import random from '../utill/random';
+import moment from 'moment';
 import { Secp256k1Wallet, SigningCosmosClient, makeCosmoshubPath } from "@cosmjs/launchpad";
 
 Vue.use(Vuex);
 
-const getStatus = (a, b) => {
-  if(a == "PENDING") return b;
-  if(b == "PENDING") return a;
-  return a;
-}
 const API = "http://localhost:1317"
 const CHAIN_ID = "Findingimposter"
 const ADDRESS_PREFIX = "cosmos"
 const LOCAL_STORAGE_LOG_KEY = "finding-imposter-log-secret"
 const LOCAL_STORAGE_COVID_KEY = "finding-imposter-covid-secret"
-const TYPES = [
-  { type: "quarantine", fields: ["user_id", "start_at", "end_at", ] },
-  { type: "covid", fields: ["status", "user_id", ] },
-  { type: "log", fields: ["place_id", "check_in_at", "check_out_at", ] },
-]
-const mock = {
-  log: [],
-  quarantine: [],
-  covid: []
-}
-
 export default new Vuex.Store({
   state: {
+    mnemonic: null,
     secrets: {},
     covidSecrets: {},
     data: {
@@ -59,18 +45,24 @@ export default new Vuex.Store({
       updated[type] = body? body:[];
       state.data = { ...state.data, ...updated };
     },
+    mnemonicSet(state, payload) {
+      state.mnemonic = payload;
+    }
   },
   actions: {
     async init({ commit, dispatch }) {
-      // reset local storage
-      // remove 14-day-old address
-      // localStorage.setItem(LOCAL_STORAGE_LOG_KEY, JSON.stringify({ }));
-      // localStorage.setItem(LOCAL_STORAGE_COVID_KEY, JSON.stringify({ }));
-
       // get local storage : log secret
+      // remove 28-day-old address
       const _secrets = localStorage.getItem(LOCAL_STORAGE_LOG_KEY);
       let secrets = JSON.parse(_secrets)
-      commit("secretsSet", secrets);
+      const expireDate = new moment().subtract(28, "days")
+      let filteredSecrets = {}
+      for (let key in secrets) {
+        const A = new moment(secrets[key].createdAt)
+        if(expireDate <= A) filteredSecrets[key] = secrets[key]
+      }
+      localStorage.setItem(LOCAL_STORAGE_LOG_KEY, JSON.stringify(filteredSecrets));
+      commit("secretsSet", filteredSecrets);
 
       // get local storage : covid secret
       const _covidSecrets = localStorage.getItem(LOCAL_STORAGE_COVID_KEY);
@@ -114,7 +106,6 @@ export default new Vuex.Store({
     async getCovid({ dispatch, commit, state }){
       const { data: { result } } = await axios.get(`${API}/Findingimposter/covid`);
       // filter
-      console.log('getCovid',result)
       const ownCovidLog = (result? result:[]).filter(i => i.covidID in state.covidSecrets);
       const covidLog = {};
       ownCovidLog.forEach(i => {
@@ -144,7 +135,6 @@ export default new Vuex.Store({
         address,
       }
       const { data: { result } } = await axios.post(`${API}/Findingimposter/quarantine/list`, body);
-      console.log("getQuarantine", result)
       // filter
       // const addresses = Object.values(state.secrets).map(i => i.address);
       // const ownQuarantines = result.filter(i => i.userAddress in addresses);
@@ -158,7 +148,8 @@ export default new Vuex.Store({
       const { ID, placeID, createdAt } = msg[0].value
       return { id: ID, placeId: placeID, createdAt }
     },
-    async getClient({}, { isNew, secret = "three gold day cloth loan brush riot steel model patch balance drip toe can jacket casual upset submit protect glove piano share when ginger" }) {
+    async getClient({ state }, { isNew, secret }) {
+      const tempSecret = secret? secret : state.mnemonic
       let client;
       let _secret;
       if(false && isNew) {
@@ -166,9 +157,9 @@ export default new Vuex.Store({
         const { secret: { data }, address } = wallet;
         _secret = data
         client = new SigningCosmosClient(API, address, wallet);
-        
+
       } else {
-        const wallet = await Secp256k1Wallet.fromMnemonic(secret, makeCosmoshubPath(0), ADDRESS_PREFIX);
+        const wallet = await Secp256k1Wallet.fromMnemonic(tempSecret, makeCosmoshubPath(0), ADDRESS_PREFIX);
         const { secret: { data }, address } = wallet;
         _secret = data
         client = new SigningCosmosClient(API, address, wallet);
@@ -178,8 +169,6 @@ export default new Vuex.Store({
     async checkout({ dispatch, commit, state }, { logId }) {
       try {
         // get client
-        console.log(state.secrets)
-        console.log(logId, state.secrets[logId])
         const secret = state.secrets[logId].secret;
         const { client } = await dispatch("getClient", { isNew: false, secret })
         const creator = client.senderAddress
@@ -249,12 +238,11 @@ export default new Vuex.Store({
         }
         const { data: result } = await axios.post(`${API}/Findingimposter/covid`, body);
         const { msg, fee, memo } = result.value;
-        const a = await client.signAndPost(msg, fee, memo);
+        const a = await client.signAndPost(msg, {amount: [], gas: "300000"}, memo);
+        const { createdAt } = msg[0].value
+        if(a.code === 11) throw 'Out of gas';
 
         // update covid
-        const { createdAt } = msg[0].value
-        console.log('report', createdAt,a)
-        
         const newCovid = { covidID, status: "PENDING",  reportAt: createdAt }
         const newData = state.data.covid;
         newData.push(newCovid)
@@ -265,6 +253,9 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error)
       }
+    },
+    accountSignIn({ commit }, { mnemonic }) {
+      commit("mnemonicSet", mnemonic);
     },
   },
 });
