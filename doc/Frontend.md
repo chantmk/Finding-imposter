@@ -1,7 +1,7 @@
 # Frontend of Finding-imposter
 
 ## Table of contents
-1. [Normal user page](##user-page)
+1. [Normal user page](#user-page)
     1. [Log list and check-in/out section](###log-section)
     2. [Quarantine list section](###quarantine-section)
     3. [Covid list and report section](###covid-section)
