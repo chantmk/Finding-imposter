@@ -31,6 +31,18 @@ The system include
 
 > We provided docker file but not recommend as we have never tested it yet.
 
+### **Option 3: Up to you**
+> Since we using starport version 0.0.10 all you have to do is install nodejs >= 12.19.0, Golang >= 1.14 and starport via below commands.
+
+```
+apt-get install nodejs
+apt-get install golang
+npm install -g @tendermint/starport@0.0.10
+
+// Serve starport
+starport serve
+```
+
 ---
 ## Project structure
 |Topic|Framework|Description|

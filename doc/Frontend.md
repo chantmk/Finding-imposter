@@ -1,5 +1,7 @@
 # Frontend of Finding-imposter
 
+Our frontend using Vue.JS created with starport from tendermint there is 2 main pages, user page and doctor page.
+
 ## Table of contents
 1. [Normal user page](#user-page)
     1. [Log list and check-in/out section](#log-section)
