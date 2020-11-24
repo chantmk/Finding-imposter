@@ -2,12 +2,12 @@
 
 ## Table of contents
 1. [Normal user page](#user-page)
-    1. [Log list and check-in/out section](###log-section)
-    2. [Quarantine list section](###quarantine-section)
-    3. [Covid list and report section](###covid-section)
-2. [Doctor page](##doctor-whole-page)
-    1. [Doctor login](###doctor-login-page)
-    2. [Covid list and approve/reject section](###approval-and-reject)
+    1. [Log list and check-in/out section](#log-section)
+    2. [Quarantine list section](#quarantine-section)
+    3. [Covid list and report section](#covid-section)
+2. [Doctor page](#doctor-whole-page)
+    1. [Doctor login](#doctor-login-page)
+    2. [Covid list and approve/reject section](#approval-and-reject)
 
 ---
 
