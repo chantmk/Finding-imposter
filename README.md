@@ -46,7 +46,7 @@ The system include
 |Database||Data mapping
 |Blockchain| Tendermint - Starport| BFT consensus protocol
 
-[...more](Description.md)
+[...more](doc/Description.md)
 
 ---
 # Members
