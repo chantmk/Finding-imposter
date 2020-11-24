@@ -1,5 +1,4 @@
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/chantmk/Finding-imposter)
-
 # Finding-imposter
  class's project of 2110595 ADV TOP COMP V (Blockchain) 
 
@@ -40,13 +39,14 @@ The system include
 
 ---
 ## Project structure
-|||
-|-|-|
-|Front end| Vue.JS
-|Back end| 
-|Blockchain| Tendermint - Starport
+|Topic|Framework|Description|
+|-|-|-|
+|Front end| Vue.JS | User interface 
+|Back end| Golang | Application logic
+|Database||Data mapping
+|Blockchain| Tendermint - Starport| BFT consensus protocol
 
-[more](Description.md)
+[...more](Description.md)
 
 ---
 # Members

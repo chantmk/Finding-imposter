@@ -228,7 +228,7 @@ export default new Vuex.Store({
         const covidID = random()
         const body = {
           base_req: {
-            chain_id: "Findingimposter",
+            chain_id: CHAIN_ID,
             from: creator
           },
           creator,
@@ -238,7 +238,11 @@ export default new Vuex.Store({
         }
         const { data: result } = await axios.post(`${API}/Findingimposter/covid`, body);
         const { msg, fee, memo } = result.value;
-        const a = await client.signAndPost(msg, {amount: [], gas: "300000"}, memo);
+        const fee_invalid = {
+            amount: [],
+            gas: "1000000"
+        }
+        const a = await client.signAndPost(msg, fee_invalid, memo);
         const { createdAt } = msg[0].value
         if(a.code === 11) throw 'Out of gas';
 
