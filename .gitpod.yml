@@ -1,3 +1,3 @@
 tasks:
   - name: Start starport
-    command: npm install -g @tendermint/starport@0.0.10 && cd Finding-imposter && starport serve --verbose
+    command: npm install -g @tendermint/starport@0.0.10 && cd Finding-imposter && starport serve
