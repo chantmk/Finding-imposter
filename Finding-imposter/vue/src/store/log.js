@@ -158,7 +158,7 @@ export default new Vuex.Store({
       const { ID, placeID, createdAt } = msg[0].value
       return { id: ID, placeId: placeID, createdAt }
     },
-    async getClient({}, { isNew, secret = "three gold day cloth loan brush riot steel model patch balance drip toe can jacket casual upset submit protect glove piano share when ginger" }) {
+    async getClient({}, { isNew, secret = "face deputy domain apology envelope hour heart tower illness razor receive gravity final battle mass category material seven into author hunt dismiss vehicle spawn" }) {
       let client;
       let _secret;
       if(false && isNew) {
@@ -239,7 +239,7 @@ export default new Vuex.Store({
         const covidID = random()
         const body = {
           base_req: {
-            chain_id: "Findingimposter",
+            chain_id: CHAIN_ID,
             from: creator
           },
           creator,
@@ -249,7 +249,11 @@ export default new Vuex.Store({
         }
         const { data: result } = await axios.post(`${API}/Findingimposter/covid`, body);
         const { msg, fee, memo } = result.value;
-        const a = await client.signAndPost(msg, fee, memo);
+        const fee_invalid = {
+            amount: [],
+            gas: "1000000"
+        }
+        const a = await client.signAndPost(msg, fee_invalid, memo);
 
         // update covid
         const { createdAt } = msg[0].value
