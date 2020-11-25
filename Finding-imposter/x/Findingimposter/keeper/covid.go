@@ -37,15 +37,12 @@ func createQuarantineByCovid(ctx sdk.Context, k Keeper, covid types.Covid) {
 		var log types.Log
 		k.cdc.MustUnmarshalBinaryLengthPrefixed(store.Get(iterator.Key()), &log)
 		for _, covidLog := range logList {
-			if covidLog.Action == "CHECKIN" {
-				if log.Action == "CHECKOUT" && log.CreatedAt.Before(covidLog.CreatedAt) {
-					continue
-				}
-			} else if covidLog.Action == "CHECKOUT" {
-				if log.Action == "CHECKIN" && log.CreatedAt.After(covidLog.CreatedAt){
-					continue
-				}
-			} else if covidLog.Creator.Equals(log.Creator) {
+			if covidLog.Creator.Equals(log.Creator) {
+				continue
+			}
+			if covidLog.Action == "CHECKIN" && log.Action == "CHECKOUT" && log.CreatedAt.Before(covidLog.CreatedAt) {
+				continue
+			} else if covidLog.Action == "CHECKOUT" && log.Action == "CHECKIN" && log.CreatedAt.After(covidLog.CreatedAt){
 				continue
 			}
 			//create quarantine
