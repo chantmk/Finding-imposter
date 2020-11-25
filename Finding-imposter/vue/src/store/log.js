@@ -77,7 +77,8 @@ export default new Vuex.Store({
     async getLog({ dispatch, commit, state }){
       const { client } = await dispatch("getClient", { isNew: true })
       const creator = client.senderAddress
-      const address = Object.values(state.secrets).map(i => i.address)
+      const allAddress = Object.values(state.secrets).map(i => i.address)
+      const address = allAddress.filter((i, index, self) => (self.indexOf(i) === index))
       const body = {
         base_req: { chain_id: CHAIN_ID, from: creator },
         address,
@@ -129,7 +130,8 @@ export default new Vuex.Store({
     async getQuarantine({ dispatch, commit, state }){
       const { client } = await dispatch("getClient", { isNew: true })
       const creator = client.senderAddress
-      const address = Object.values(state.secrets).map(i => i.address)
+      const allAddress = Object.values(state.secrets).map(i => i.address)
+      const address = allAddress.filter((i, index, self) => (self.indexOf(i) === index))
       const body = {
         base_req: { chain_id: CHAIN_ID, from: creator },
         address,
@@ -223,7 +225,8 @@ export default new Vuex.Store({
         // create new wallet
         const { client, secret } = await dispatch("getClient", { isNew: true })
         const creator = client.senderAddress
-        
+        const allAddress = Object.values(state.secrets).map(i => i.address)
+        const pubKey = allAddress.filter((i, index, self) => (self.indexOf(i) === index))
         // create new covid
         const covidID = random()
         const body = {
@@ -234,7 +237,7 @@ export default new Vuex.Store({
           creator,
           covidID,
           status: "PENDING",
-          pubKey: Object.values(state.secrets).map(i => i.address),
+          pubKey,
         }
         const { data: result } = await axios.post(`${API}/Findingimposter/covid`, body);
         const { msg, fee, memo } = result.value;
@@ -253,7 +256,7 @@ export default new Vuex.Store({
         commit("dataSet", { type: "covid", body: newData });
 
         // store secret in local storage
-        commit("covidSecretsUpdate", { [covidID]: { secret, createdAt, address: creator }});
+        commit("covidSecretsUpdate", { [covidID]: { secret, address: creator }});
       } catch (error) {
         console.log(error)
       }
