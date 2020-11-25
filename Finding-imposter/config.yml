@@ -7,10 +7,9 @@ accounts:
   - name: user3
     coins: ["10000000000token"]
   - name: realDoctor
-    coins: ["1000000000000token", "100000000stake"]
+    coins: ["1000000000000token"]
   - name: fakeDoctor
+    coins: ["1000000token"]
 validator:
-  - name: user1
-    staked: "100000000stake"
-  - name: realDoctor
-    staked: "100000000stake"
+  name: user1
+  staked: "100000000stake"
