@@ -3,11 +3,11 @@ import Vuex from "vuex";
 import axios from "axios";
 import random from '../utill/random';
 import moment from 'moment';
+import API from "./api.js";
 import { Secp256k1Wallet, SigningCosmosClient, makeCosmoshubPath } from "@cosmjs/launchpad";
 
 Vue.use(Vuex);
 
-const API = "http://localhost:1317"
 const CHAIN_ID = "Findingimposter"
 const ADDRESS_PREFIX = "cosmos"
 const LOCAL_STORAGE_LOG_KEY = "finding-imposter-log-secret"
