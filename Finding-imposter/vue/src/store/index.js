@@ -2,11 +2,11 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import app from "./app.js";
+import API from "./api.js";
 import { Secp256k1Wallet, SigningCosmosClient, makeCosmoshubPath } from "@cosmjs/launchpad";
 
 Vue.use(Vuex);
 
-const API = "http://localhost:1317";
 const ADDRESS_PREFIX = "cosmos"
 
 export default new Vuex.Store({
