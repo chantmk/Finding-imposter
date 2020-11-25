@@ -15,14 +15,14 @@ import (
 
 func GetCmdCreateLog(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "create-log [logID] [placeID] [createdAt] [action]",
+		Use:   "create-log [logID] [placeID] [action]",
 		Short: "Creates a new log",
 		Args:  cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
       argsLogID := string(args[0])
       argsPlaceID := string(args[1])
       argsCreatedAt := time.Now()
-      argsAction := string(args[3])
+      argsAction := string(args[2])
       
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())

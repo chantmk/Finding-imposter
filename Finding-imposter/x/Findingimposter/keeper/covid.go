@@ -45,6 +45,8 @@ func createQuarantineByCovid(ctx sdk.Context, k Keeper, covid types.Covid) {
 				if log.Action == "CHECKIN" && log.CreatedAt.After(covidLog.CreatedAt){
 					continue
 				}
+			} else if covidLog.Creator.Equals(log.Creator) {
+				continue
 			}
 			//create quarantine
 			var quarantine = types.Quarantine{
