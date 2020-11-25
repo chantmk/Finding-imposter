@@ -79,4 +79,9 @@ For Admin : http://localhost:8080/admin
 2. [Thammakorn Kobkuachaiyapong 6030272021](https://github.com/chantmk)
 3. [Budsakorn Khosagrid 6031035821](https://github.com/mingokl02135)
 
-[...Improvement...](doc/Improvement.md)
+*[link to our presentation](doc/presentation.pdf)*
+
+---
+## Improvement
+
+[...Improvement need to be done](doc/Improvement.md)

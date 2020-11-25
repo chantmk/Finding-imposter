@@ -5,7 +5,7 @@ For all timestamp included in each transaction are created by Backend via Time m
 
 
 
-[...In case you looking for list of all command and api](doc/Command.md)
+[...In case you looking for list of all command and api](Command.md)
 
 Our Backend consist of 4 types
 1. [Log](#log)
@@ -19,7 +19,7 @@ This type represent Check in and Check out log which stored address of the gener
 ```
 Log {
     Creator sdk.AccAddress,
-	ID string,
+    ID string,
     LogID string,
     PlaceID string,
     CreatedAt time.Time,
