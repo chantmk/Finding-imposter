@@ -31,6 +31,7 @@ Log {
 |create-log| POST /log| logID, placeID, action| create log tx with required information
 |list-log| GET /log|-| list all log
 |list-spec-log| POST /log/list| address(s)| list log created with specify address|
+---
 
 ## Quarantine
 Quarantine type represent quarantine block which specify who has to isolate from when to when.
@@ -52,7 +53,7 @@ Quarantine {
 |create-quarantine| POST /quarantine| address | create quarantine tx with required information
 |list-quarantine| GET /quarantine|-| list all quarantine
 |list-spec-quarantine| POST /quarantine/list| address(s)| list quarantine that specify address need to be isolate|
-
+---
 ## Covid
 Covid type represent who affect with COVID-19, will be created after user press the report button. Then the address(s) specified will use for query log block and find who has to isolate via create quarantine transaction.
 
@@ -77,6 +78,7 @@ Covid {
 |list-covid| GET /covid|-| list all covid
 |list-spec-covid| POST /covid/list| address(s)| list covid that specify address affected by COVID-19|
 |list-pending-covid| POST /covid/pending |-| list all covid transaction with status PENDING
+---
 ## Doctor
 Doctor type represent who is verified doctor.
 
@@ -94,3 +96,4 @@ Doctor {
 |-|-|-|-|
 |create-doctor| POST /doctor| address, isDoctor | create doctor tx with required information
 |list-doctor| GET /doctor|-| list all doctor
+---
