@@ -63,10 +63,10 @@ Covid type represent who affect with COVID-19, will be created after user press 
 Covid {
 	Creator sdk.AccAddress,
 	ID string,
-  CovidID string,
-  CreatedAt time.Time,
-  Status string,
-  PubKey []string,
+    CovidID string,
+    CreatedAt time.Time,
+    Status string,
+    PubKey []string,
 }
 ```
 > The status is `PENDING`, `APPROVED` or `REJECTED`
