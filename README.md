@@ -2,7 +2,7 @@
 # Finding-imposter
  class's project of 2110595 ADV TOP COMP V (Blockchain) 
 
-![project_img](/doc/images/slide1.JPG)
+![project_img](doc/images/Slide1.JPG)
 
 The project is the COVID-19 pandemic logging system using blockchain to collect information of people travelling through various building which registered to our system.
 
@@ -52,9 +52,11 @@ For Doctor : http://localhost:8080/
 
 For Admin : http://localhost:8080/admin
 > This page will show the local storage using in this project and have reset button.
+> 
+>Just for debugging
 
 ---
-## Project structure
+## Project architecture
 |Topic|Framework|Description|
 |-|-|-|
 |[Front end](doc/Frontend.md)| [Vue.JS](https://vuejs.org/) | User interface 
@@ -62,9 +64,14 @@ For Admin : http://localhost:8080/admin
 |Database|[mongoDB](https://www.mongodb.com/)|Data mapping
 |Blockchain| [Tendermint](https://tendermint.com/)| BFT consensus protocol
 
+---
 
 > Please note that Backend will terminate by this year
+
+![tech_stack](doc/images/Slide7.JPG)
+![architecture](doc/images/Slide9.JPG)
 ---
+
 # Members
 1. [Jirapat Khupanit 6030087221](https://github.com/focusjk)
 2. [Thammakorn Kobkuachaiyapong 6030272021](https://github.com/chantmk)

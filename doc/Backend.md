@@ -99,3 +99,6 @@ Doctor {
 |create-doctor| POST /doctor| address, isDoctor | create doctor tx with required information
 |list-doctor| GET /doctor|-| list all doctor
 ---
+
+>User can request to be a doctor by click request in the doctor page.
+> ![request_doctor](images/Slide24.JPG)

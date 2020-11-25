@@ -19,17 +19,17 @@ This page is the user's page. User's device will open this page after scan QR co
 * Quarantine.
 * Covid.
 
-![user_page]()
-
-![QR_code]()
+![user_page](images/user_page.png)
 
 ### Log section
 In this section user could see their check-in and check-out log and could press check in button to commit check in. The location will be assigned automatically 
 
 1. For checking-in click http://localhost:8080/main?id=5faf9e8c6e770822234c3dde 
-> Id is represented the place, we don't allow user to input by themselves.
+
+> Id is represented the place, we don't allow user to input by themselves but could access via scan our pre-generated QR code
 >
 >*You need to login with mnemonic before checkin* 
+> ![QR_code](images/Slide28.JPG)
 >
 >Find out more places from https://web-swacp72spq-as.a.run.app/place
 
@@ -40,12 +40,15 @@ In this section user could see their check-in and check-out log and could press 
 3. After user press check out button the application will
     1. Automatically create log transaction with account from local storage, status CHECKOUT, timestamp and other required information.
 
-![log]()
+![log](images/user_page_log.png)
 
+[check-in flow chart](images/Slide14.JPG)
+
+[check-out flow chart](images/Slide16.JPG)
 ### Quarantine section
 In this section our web application will query with account in the local storage and show all quarantine needed for the user.
 
-![quarantine]()
+![quarantine](images/user_page_quarantine.png)
 
 ### Covid section
 
@@ -56,13 +59,14 @@ After user press the self-report button the application will
 2. Create covid transaction with timestamp, status PENDING and address from user local storage.
 3. save account to local storage.
 
-![covid]()
+![covid](images/user_page_covid.png)
 
+[report flow chart](images/Slide20.JPG)
 ## Doctor page
 
 This page is for Doctor who verified by trusted third party to see is it any covid pending to approve or reject.
 
-![doctor-page]()
+![doctor-page](images/doctor_page.png)
 
 > In this state doctor must create the doctor transaction to verify he/she is a doctor. If there is no doctor transaction relate to his/her account he/she will not see as a doctor.
 
@@ -70,12 +74,13 @@ This page is for Doctor who verified by trusted third party to see is it any cov
 
 This page is the first page of the doctor. The verfied doctor must provide nmemonic password in order to access doctor function.
 
-![doctor-login]()
+![doctor-login](images/doctor_login_page.png)
 
 ### Approval and Reject
 
 This section consist of two parts, one for list pending covid transaction and one for approve/reject each transaction.
 
-![doctor-covid]()
+![doctor-covid](images/doctor_page.png)
 
+![Approve flow chart](images/Slide23.JPG)
 [Table of contents](#frontend-of-finding-imposter)
