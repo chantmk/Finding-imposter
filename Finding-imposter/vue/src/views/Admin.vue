@@ -10,11 +10,15 @@
           <button class="reset-button" @click="resetCovidLog">
             reset COVID LOG secret
           </button>
+          <button class="reset-button" @click="resetMnemonic">
+            reset MNEMONIC secret
+          </button>
           <button class="reset-button" @click="getAll">
             get ALL secret
           </button>
         </div>
-        <div style="font-size: 16px">Log</div>
+        <div style="font-size: 16px; margin-top: 24px">Mnemonic : {{ this.mnemonic }} </div>
+        <div style="font-size: 16px; margin-top: 24px">Log</div>
         {{ this.secrets }}
         <div style="font-size: 16px; margin-top: 24px">Covid Log</div>
         {{ this.covidSecrets }}
@@ -29,6 +33,7 @@ export default {
     return {
       secrets: {},
       covidSecrets: {},
+      mnemonic: ""
     }
   },
   mounted() {
@@ -41,17 +46,24 @@ export default {
     getAll() {
       const LOCAL_STORAGE_LOG_KEY = "finding-imposter-log-secret"
       const LOCAL_STORAGE_COVID_KEY = "finding-imposter-covid-secret"
+      const LOCAL_STORAGE_USER_SECRET = "finding-imposter-user-secret"
 
       const _secrets = localStorage.getItem(LOCAL_STORAGE_LOG_KEY);
       this.secrets = JSON.parse(_secrets)
 
       const _covidSecrets = localStorage.getItem(LOCAL_STORAGE_COVID_KEY);
       this.covidSecrets = JSON.parse(_covidSecrets)
+
+      this.mnemonic = localStorage.getItem(LOCAL_STORAGE_USER_SECRET);
     },
     resetCovidLog() {
       const LOCAL_STORAGE_COVID_KEY = "finding-imposter-covid-secret"
       localStorage.setItem(LOCAL_STORAGE_COVID_KEY, JSON.stringify({ }));
     },
+    resetMnemonic() {
+      const LOCAL_STORAGE_USER_SECRET = "finding-imposter-user-secret"
+      localStorage.setItem(LOCAL_STORAGE_USER_SECRET, "");
+    }
   }
 };
 </script>

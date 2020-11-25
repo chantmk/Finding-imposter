@@ -13,7 +13,7 @@
             <div style="flex:1" class="flex-center">{{ formatter(log.checkInAt) }}</div>
             <div style="flex:1" class="flex-center" v-if="!!log.checkOutAt">{{ formatter(log.checkOutAt) }}</div>
             <div class="flex-center" style="flex:1;" v-else>
-                <button class="check-out-button" @click="() => checkout(log.logID)" :disabled="outLoading">
+                <button class="check-out-button" @click="() => checkout(log.logID)" :disabled="!isLogin || outLoading">
                   <i class="fa fa-spinner fa-spin" v-if="outLoading" style="font-size:14px"></i>
                   <div v-else>+</div>  
                 </button>
@@ -28,7 +28,7 @@
             :value="placeName"
             disabled
         />
-        <button class="check-in-button" @click="checkin" :disabled="disabled || loading">
+        <button class="check-in-button" @click="checkin" :disabled="!isLogin || disabled || loading">
           <i class="fa fa-spinner fa-spin" v-if="loading"></i>
           <div v-else>CHECK IN</div>
         </button>
@@ -72,6 +72,9 @@ export default {
         return B - A;
       })
       return logs
+    },
+    isLogin() {
+      return !!this.$store.log.state.mnemonic
     },
     place() {
       const temp = {}

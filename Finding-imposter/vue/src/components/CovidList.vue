@@ -19,7 +19,7 @@
     </div>
     <div class="divider"></div>
     <div class="check-in">
-        <button class="report-button" @click="report" :disabled="loading">
+        <button class="report-button" @click="report" :disabled="!isLogin || loading">
           <i class="fa fa-spinner fa-spin" v-if="loading"></i>
           <div v-else>REPORT</div>
         </button>
@@ -38,6 +38,9 @@ export default {
     logs() {
       return this.$store.log.state.data.covid
     },
+    isLogin() {
+      return !!this.$store.log.state.mnemonic
+    }
   },
   methods: {
     async report() {
