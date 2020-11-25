@@ -32,7 +32,7 @@ The system include
 > We provided docker file but not recommend as we have never tested it yet.
 
 ### **Option 3: Up to you**
-> Since we using starport version 0.0.10 all you have to do is install nodejs >= 12.19.0, Golang >= 1.14 and starport via below commands.
+> Since we using [Starport version 0.0.10](https://github.com/tendermint/starport) all you have to do is install [nodejs >= 12.19.0](https://nodejs.org/en/),[ Golang >= 1.14](https://golang.org/) and [Starport](https://github.com/tendermint/starport) via below commands.
 
 ```
 apt-get install nodejs
@@ -47,7 +47,7 @@ starport serve
 ## Project structure
 |Topic|Framework|Description|
 |-|-|-|
-|[Front end](doc/Frontend.md)| [Vue.JS](https://nodejs.org/en/) | User interface 
+|[Front end](doc/Frontend.md)| [Vue.JS](https://vuejs.org/) | User interface 
 |[Back end](doc/Backend.md)| [Golang](https://golang.org/) | Application logic
 |Database|[mongoDB](https://www.mongodb.com/)|Data mapping
 |Blockchain| [Tendermint](https://tendermint.com/)| BFT consensus protocol
