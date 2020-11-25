@@ -29,7 +29,6 @@ export default new Vuex.Store({
     },
     secretsUpdate(state, payload) {
       state.secrets = { ...state.secrets, ...payload }
-      console.log("secretsUpdate", state.secrets)
       localStorage.setItem(LOCAL_STORAGE_LOG_KEY, JSON.stringify(state.secrets));
     },
     covidSecretsSet(state, payload) {
@@ -40,7 +39,6 @@ export default new Vuex.Store({
       localStorage.setItem(LOCAL_STORAGE_COVID_KEY, JSON.stringify(state.covidSecrets));
     },
     dataSet(state, { type, body }) {
-      console.log(type, body)
       const updated = {};
       updated[type] = body? body:[];
       state.data = { ...state.data, ...updated };
