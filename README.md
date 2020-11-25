@@ -43,6 +43,14 @@ npm install -g @tendermint/starport@0.0.10
 starport serve
 ```
 
+## Link to each page
+For User : http://localhost:8080/main
+
+For Doctor : http://localhost:8080/
+
+For Admin : http://localhost:8080/admin
+> This page will show the local storage using in this project and have reset button.
+
 ---
 ## Project structure
 |Topic|Framework|Description|
@@ -52,6 +60,8 @@ starport serve
 |Database|[mongoDB](https://www.mongodb.com/)|Data mapping
 |Blockchain| [Tendermint](https://tendermint.com/)| BFT consensus protocol
 
+
+> Please note that Backend will terminate by this year
 ---
 # Members
 1. [Jirapat Khupanit 6030087221](https://github.com/focusjk)

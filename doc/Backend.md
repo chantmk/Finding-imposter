@@ -3,6 +3,8 @@
 Backend developed with golang pre-created with Starport script from tendermint.
 For all timestamp included in each transaction are created by Backend via Time module.
 
+
+
 [...In case you looking for list of all command and api](doc/Command.md)
 
 Our Backend consist of 4 types
@@ -90,7 +92,7 @@ Doctor {
     IsDoctor string
 }
 ```
-> isDoctor is `TRUE` or `FALSE` true for verified and false for unverified.
+> isDoctor is `True` or `False` True for verified and False for unverified.
 ### Command and API for Doctor
 |Command | API | Argument/Body | Description|
 |-|-|-|-|

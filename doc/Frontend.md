@@ -26,12 +26,19 @@ This page is the user's page. User's device will open this page after scan QR co
 ### Log section
 In this section user could see their check-in and check-out log and could press check in button to commit check in. The location will be assigned automatically 
 
-After user press check in button the application will 
-1. Automatically create log transaction with status CHECKIN, timestamp and other required information.
-2. store account into local storage
+1. For checking-in click http://localhost:8080/main?id=5faf9e8c6e770822234c3dde 
+> Id is represented the place, we don't allow user to input by themselves.
+>
+>*You need to login with mnemonic before checkin* 
+>
+>Find out more places from https://web-swacp72spq-as.a.run.app/place
 
-After user press check out button the application will
-1. Automatically create log transaction with account from local storage, status CHECKOUT, timestamp and other required information.
+2. After user press check in button the application will 
+    1. Automatically create log transaction with status CHECKIN, timestamp and other required information.
+    2. store account into local storage
+
+3. After user press check out button the application will
+    1. Automatically create log transaction with account from local storage, status CHECKOUT, timestamp and other required information.
 
 ![log]()
 
