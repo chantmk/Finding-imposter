@@ -2,6 +2,8 @@
 # Finding-imposter
  class's project of 2110595 ADV TOP COMP V (Blockchain) 
 
+![project_img](/doc/images/slide1.JPG)
+
 The project is the COVID-19 pandemic logging system using blockchain to collect information of people travelling through various building which registered to our system.
 
 The name "Finding-imposter" of the project is from [AmongUS](http://www.innersloth.com/gameAmongUs.php). The objective of game is to find "who is the imposter" as well as our project "who is infected".
