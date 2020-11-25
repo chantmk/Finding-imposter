@@ -26,6 +26,8 @@ The system include
 > 3. Open Browser of port 8080 and add (link) to the end of link to access our frontend.
 > 4. Enjoy!
 
+> ** In case there is `Invalid host header` Please uncomment vue/vue.config.js
+
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/<your-org>/<your-project>)
 
 
