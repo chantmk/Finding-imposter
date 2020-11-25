@@ -54,6 +54,8 @@ For Admin : http://localhost:8080/admin
 > This page will show the local storage using in this project and have reset button.
 > 
 >Just for debugging
+>
+> ![admin_page](doc/images/admin.png)
 
 ---
 ## Project architecture
